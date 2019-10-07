@@ -14,10 +14,16 @@ def compute_gradient(y, tx, w):
     e = y - tx@w
     gradient = -1/len(e) * tx.T@e
     
-    return gradient
+    return gradient, e
 
 def least_squares_GD(y, tx, initial_w, max_iters, gamma):
-    return NotImplementedError
+    w = initial_w
+    for n_iter in range(max_iters):
+        gradient, error = compute_gradient(y, tx, w)
+        loss = mse(error)
+        w = w - gamma * gradient
+
+    return w, loss
 
 def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
     return NotImplementedError
