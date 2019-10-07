@@ -26,7 +26,13 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma):
     return w, loss
 
 def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
-    return NotImplementedError
+    w = initial_w
+    for y_batch, tx_batch in batch_iter(y, tx, 1, max_iters, True):
+        gradient, error = compute_gradient(y_batch, tx_batch, w)
+        loss = mse(error)
+        w = w - gamma * gradient
+
+   return w, loss
 
 def least_squares(y, tx):
     return NotImplementedError
