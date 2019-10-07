@@ -1,3 +1,15 @@
+#mean square error
+def mse(e):
+    return 1/2*np.mean(e**2)
+
+#mean absolute error
+def mae(e):
+    return 1/2*np.mean(np.abs(e))
+
+#compute the loss according to loss function
+def compute_loss(f_loss, y, tx, w):
+    return f_loss(y - tx@w)
+
 def least_squares_GD(y, tx, initial_w, max_iters, gamma):
     return NotImplementedError
 
