@@ -10,6 +10,12 @@ def mae(e):
 def compute_loss(f_loss, y, tx, w):
     return f_loss(y - tx@w)
 
+def compute_gradient(y, tx, w):
+    e = y - tx@w
+    gradient = -1/len(e) * tx.T@e
+    
+    return gradient
+
 def least_squares_GD(y, tx, initial_w, max_iters, gamma):
     return NotImplementedError
 
