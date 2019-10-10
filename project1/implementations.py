@@ -35,10 +35,18 @@ def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
    return w, loss
 
 def least_squares(y, tx):
-    return NotImplementedError
+    def compute_loss(y, tx, w):
+        """Calculate the loss.
+        """
+        return np.sum( (tx.dot(w) - y)**2 )
+    w = np.linalg.inv(tx.T.dot(tx)).dot(tx.T).dot(y)
+    return w, compute_loss(y, tx, w)
 
 def ridge_regression(y, tx, lambda_):
-    return NotImplementedError
+    n = len(y)
+    lambda_prime = lambda_*2*n
+    mat = np.linalg.inv(tx.T.dot(tx) + lambda_prime*np.identity(tx.shape[1]))
+    return mat.dot(tx.T).dot(y)
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
     return NotImplementedError
