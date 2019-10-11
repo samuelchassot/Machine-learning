@@ -10,7 +10,7 @@ def compute_loss(f_loss, y, tx, w):
     return f_loss(y - tx@w)
 
 def compute_rmse_loss(y, tx, w):
-    return np.sqrt(compute_loss(mse, y, tx, w))
+    return np.sqrt(2*compute_loss(mse, y, tx, w))
 
 def compute_gradient(y, tx, w):
     e = y - tx@w
