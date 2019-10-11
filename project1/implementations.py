@@ -1,14 +1,16 @@
-#mean square error
+import numpy as np
+
 def mse(e):
     return 1/2*np.mean(e**2)
 
-#mean absolute error
 def mae(e):
     return 1/2*np.mean(np.abs(e))
 
-#compute the loss according to loss function
 def compute_loss(f_loss, y, tx, w):
     return f_loss(y - tx@w)
+
+def compute_rmse_loss(y, tx, w):
+    return np.sqrt(compute_loss(mse, y, tx, w))
 
 def compute_gradient(y, tx, w):
     e = y - tx@w
