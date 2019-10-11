@@ -37,7 +37,8 @@ def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
    return w, loss
 
 def least_squares(y, tx):
-    return NotImplementedError
+    w = np.linalg.inv(tx.T @ tx) @ (tx.T @ y)
+    return w, compute_loss(mse, y, tx, w)
 
 def ridge_regression(y, tx, lambda_):
     return NotImplementedError
