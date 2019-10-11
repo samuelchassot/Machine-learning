@@ -41,7 +41,9 @@ def least_squares(y, tx):
     return w, compute_loss(mse, y, tx, w)
 
 def ridge_regression(y, tx, lambda_):
-    return NotImplementedError
+    w = np.linalg.inv(tx.T @ tx +
+            lambda_*np.eye(tx.shape[1]) @ (tx.T @ y)
+    return w, compute_loss(y , tx, w)
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
     return NotImplementedError
