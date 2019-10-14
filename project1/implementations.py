@@ -1,14 +1,16 @@
-#mean square error
+import numpy as np
+
 def mse(e):
     return 1/2*np.mean(e**2)
 
-#mean absolute error
 def mae(e):
     return 1/2*np.mean(np.abs(e))
 
-#compute the loss according to loss function
 def compute_loss(f_loss, y, tx, w):
     return f_loss(y - tx@w)
+
+def compute_rmse_loss(y, tx, w):
+    return np.sqrt(2*compute_loss(mse, y, tx, w))
 
 def compute_gradient(y, tx, w):
     e = y - tx@w
@@ -35,10 +37,13 @@ def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
    return w, loss
 
 def least_squares(y, tx):
-    return NotImplementedError
+    w = np.linalg.inv(tx.T @ tx) @ (tx.T @ y)
+    return w, compute_loss(mse, y, tx, w)
 
 def ridge_regression(y, tx, lambda_):
-    return NotImplementedError
+    w = np.linalg.inv(tx.T @ tx +
+            lambda_*2*len(y)*np.eye(tx.shape[1]) @ (tx.T @ y)
+    return w, compute_loss(y , tx, w)
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
     return NotImplementedError
