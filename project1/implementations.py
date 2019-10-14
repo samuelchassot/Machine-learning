@@ -1,5 +1,4 @@
 import numpy as np
-import random
 
 
 def standardize(x):
@@ -9,7 +8,7 @@ def standardize(x):
     return (x-mean)/std, mean, std
 
 def get_batches(y, tx, num_batches):
-    seed = random.randint(0,1000000)
+    seed = np.random.randint(0,1000000)
     np.random.seed(seed)
     tx_shuffle = np.random.shuffle(tx)
     y_shuffle = np.random.shuffle(y)
