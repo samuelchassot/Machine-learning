@@ -1,5 +1,23 @@
 import numpy as np
 
+
+def standardize(x):
+    mean = np.mean(x)
+    std = np.std(x)
+
+    return (x-mean)/std, mean, std
+
+def get_batches(y, tx, num_batches):
+    seed = np.random.randint(0,1000000)
+    np.random.seed(seed)
+    tx_shuffle = np.random.shuffle(tx)
+    y_shuffle = np.random.shuffle(y)
+
+    for i in range(num_batches):
+        end_indx = min(i+1, len(y))
+        if i != end_indx:
+            yield y_shuffle[i: end_indx], tx_shuffle[i: end_indx]
+
 def mse(e):
     return 1/2*np.mean(e**2)
 
