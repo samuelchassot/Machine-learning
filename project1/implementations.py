@@ -1,5 +1,11 @@
 import numpy as np
 
+def standardize(x):
+    mean = np.mean(x)
+    std = np.std(x)
+
+    return (x-mean)/std, mean, std
+
 def mse(e):
     return 1/2*np.mean(e**2)
 
