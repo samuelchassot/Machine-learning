@@ -69,3 +69,11 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
 def reg_logistic_regression(y, tx, lambda_, initial_w,
         max_iters, gamma):
     return NotImplementedError
+
+
+################################################################
+def expand_features_polynomial(x, degree):
+    result = []
+    for i in range(0, degree):
+        result = np.hstack((result, x**i))
+    return result
