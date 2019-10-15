@@ -19,7 +19,7 @@ def get_batches(y, tx, num_batches):
 
 def remove_wrong_columns(tx):
     for c in np.flip(np.where(np.any(tx == -999.0, axis = 0))):
-        np.delete(tx, c, axis = 1)
+        tx = np.delete(tx, c, axis = 1)
     return tx
     
 
