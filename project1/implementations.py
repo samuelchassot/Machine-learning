@@ -18,6 +18,11 @@ def get_batches(y, tx, num_batches):
         if i != end_indx:
             yield y_shuffle[i: end_indx], tx_shuffle[i: end_indx]
 
+def remove_wrong_columns(tx):
+    for c in np.flip(np.where(np.any(tx == -999.0, axis = 0))):
+        np.delete(tx, c, axis = 1)
+    
+
 def mse(e):
     return 1/2*np.mean(e**2)
 
@@ -60,7 +65,7 @@ def least_squares(y, tx):
 
 def ridge_regression(y, tx, lambda_):
     w = np.linalg.inv(tx.T @ tx +
-            lambda_*2*len(y)*np.eye(tx.shape[1]) @ (tx.T @ y)
+            lambda_*2*len(y)*np.eye(tx.shape[1]) @ (tx.T @ y))
     return w, compute_loss(y , tx, w)
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
