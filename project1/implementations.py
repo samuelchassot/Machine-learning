@@ -47,11 +47,12 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma):
 
 def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
     w = initial_w
-    for y_batch, tx_batch in get_batches(y, tx, max_iters):
+    for y_batch, tx_batch in batch_iter(y, tx, 1, max_iters, True):
         gradient, error = compute_gradient(y_batch, tx_batch, w)
         loss = mse(error)
         w = w - gamma * gradient
-    return w, loss
+
+   return w, loss
 
 def least_squares(y, tx):
     w = np.linalg.inv(tx.T @ tx) @ (tx.T @ y)
@@ -59,8 +60,8 @@ def least_squares(y, tx):
 
 def ridge_regression(y, tx, lambda_):
     w = np.linalg.inv(tx.T @ tx +
-            lambda_*2*len(y)*np.eye(tx.shape[1]) @ (tx.T @ y))
-    return w, compute_rmse_loss(y, tx, w)
+            lambda_*2*len(y)*np.eye(tx.shape[1]) @ (tx.T @ y)
+    return w, compute_loss(y , tx, w)
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
     return NotImplementedError
