@@ -47,12 +47,12 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma):
 
 def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
     w = initial_w
-    for y_batch, tx_batch in batch_iter(y, tx, 1, max_iters, True):
+    for y_batch, tx_batch in get_batches(y, tx, max_iters):
         gradient, error = compute_gradient(y_batch, tx_batch, w)
         loss = mse(error)
         w = w - gamma * gradient
 
-   return w, loss
+    return w, loss
 
 def least_squares(y, tx):
     w = np.linalg.inv(tx.T @ tx) @ (tx.T @ y)
