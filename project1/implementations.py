@@ -105,7 +105,7 @@ def learning_by_reg_gradient(y, tx, w, gamma, lambda_):
     Do one step of gradient descent, using the regularized logistic regression.
     Return the updated w and loss.
     """
-    loss, gradient, hessian = reg_logistic_regression(y, tx, w, lambda_)
+    loss, gradient = reg_logistic_regression(y, tx, w, lambda_)
     w -= gamma * gradient
     return w, loss
 
