@@ -68,12 +68,77 @@ def ridge_regression(y, tx, lambda_):
             lambda_*2*len(y)*np.eye(tx.shape[1]) @ (tx.T @ y))
     return w, compute_loss(y , tx, w)
 
+#Functions for logistic regression
+def sigmoid(t):
+    """apply sigmoid function on t."""
+    t_exp = np.exp(t)
+    return t_exp /(1 + t_exp)
+
+def calculate_loss_sigmoid(y, tx, w):
+    """compute the cost by negative log likelihood."""
+    sigm_tx_w = sigmoid(tx @ w)
+    return - np.sum(y.T @ np.log(sigm_tx_w) \
+                    + (1 - y).T @ np.log(1 - sigm_tx_w))
+
+def calculate_gradient_sigmoid(y, tx, w):
+    """compute the gradient of loss."""
+    return tx.T @ (sigmoid(tx@w) - y)
+
+def learning_by_gradient_descent(y, tx, w, gamma):
+    """
+    Do one step of gradient descent using logistic regression.
+    Return the updated w and loss.
+    """
+    loss = calculate_loss_sigmoid(y, tx, w)
+    gradient = calculate_gradient_sigmoid(y, tx, w)
+    w -= gamma * gradient
+    return w, loss
+
+def reg_logistic_regression(y, tx, w, lambda_):
+    """return the loss and gradient"""
+    loss = calculate_loss_sigmoid(y, tx, w) + lambda_* w.T @ w
+    gradient = calculate_gradient_sigmoid(y, tx, w) + 2 * lambda_ * w
+    return loss, gradient
+
+def learning_by_reg_gradient(y, tx, w, gamma, lambda_):
+    """
+    Do one step of gradient descent, using the regularized logistic regression.
+    Return the updated w and loss.
+    """
+    loss, gradient, hessian = reg_logistic_regression(y, tx, w, lambda_)
+    w -= gamma * gradient
+    return w, loss
+
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
-    return NotImplementedError
+    threshold = 1e-8
+    previous_loss = 0
+    w = initial_w
+
+    for iter in range(max_iters):
+        w, loss = learning_by_gradient_descent(y, tx, w, gamma)
+        # converge criterion
+        if np.abs(loss - previous_loss) < threshold:
+            break
+
+        previous_loss = loss
+
+    return w, loss
 
 def reg_logistic_regression(y, tx, lambda_, initial_w,
         max_iters, gamma):
-    return NotImplementedError
+    threshold = 1e-8
+    previous_loss = 0
+    w = initial_w
+
+    for iter in range(max_iters):
+        w, loss = learning_by_reg_gradient(y, tx, w, gamma, lambda_)
+        # converge criterion
+        if np.abs(loss - previous_loss) < threshold:
+            break
+
+        previous_loss = loss
+
+    return w, loss
 
 
 ################################################################
