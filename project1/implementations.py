@@ -1,6 +1,6 @@
 import numpy as np
 
-
+#Helper functions
 def standardize(x):
     mean = np.mean(x)
     std = np.std(x)
@@ -21,8 +21,15 @@ def remove_wrong_columns(tx):
     for c in np.flip(np.where(np.any(tx == -999.0, axis = 0))):
         tx = np.delete(tx, c, axis = 1)
     return tx
-    
 
+def expand_features_polynomial(x, degree):
+    result = np.zeros(x.shape)
+    for i in range(0, degree):
+        result = np.hstack((result, x**i))
+    return result
+    
+ #Helper functions for least squares and ridge regression
+    
 def mse(e):
     return 1/2*np.mean(e**2)
 
@@ -41,6 +48,52 @@ def compute_gradient(y, tx, w):
     
     return gradient, e
 
+#Helper functions and variables for logistic regression
+
+#Threshold for convergence criterion of both logistic regression
+threshold = 1e-8
+
+def sigmoid(t):
+    """apply sigmoid function on t."""
+    t_exp = np.exp(t)
+    return t_exp /(1 + t_exp)
+
+def calculate_loss_sigmoid(y, tx, w):
+    """compute the cost by negative log likelihood."""
+    sigm_tx_w = sigmoid(tx @ w)
+    return - np.sum(y.T @ np.log(sigm_tx_w) \
+                    + (1 - y).T @ np.log(1 - sigm_tx_w))
+
+def calculate_gradient_sigmoid(y, tx, w):
+    """compute the gradient of loss."""
+    return tx.T @ (sigmoid(tx@w) - y)
+
+def learning_by_gradient_descent(y, tx, w, gamma):
+    """
+    Do one step of gradient descent using logistic regression.
+    Return the updated w and loss.
+    """
+    loss = calculate_loss_sigmoid(y, tx, w)
+    gradient = calculate_gradient_sigmoid(y, tx, w)
+    w -= gamma * gradient
+    return w, loss
+
+def loss_grad_reg_logistic_regression(y, tx, w, lambda_):
+    """return the loss and gradient"""
+    loss = calculate_loss_sigmoid(y, tx, w) + lambda_* w.T @ w
+    gradient = calculate_gradient_sigmoid(y, tx, w) + 2 * lambda_ * w
+    return loss, gradient
+
+def learning_by_reg_gradient(y, tx, w, gamma, lambda_):
+    """
+    Do one step of gradient descent, using the regularized logistic regression.
+    Return the updated w and loss.
+    """
+    loss, gradient = loss_grad_reg_logistic_regression(y, tx, w, lambda_)
+    w -= gamma * gradient
+    return w, loss
+
+#Implementation of project 1 functions
 def least_squares_GD(y, tx, initial_w, max_iters, gamma):
     w = initial_w
     for n_iter in range(max_iters):
@@ -68,53 +121,12 @@ def ridge_regression(y, tx, lambda_):
             lambda_*2*len(y)*np.eye(tx.shape[1]) @ (tx.T @ y))
     return w, compute_loss(y , tx, w)
 
-#Functions for logistic regression
-def sigmoid(t):
-    """apply sigmoid function on t."""
-    t_exp = np.exp(t)
-    return t_exp /(1 + t_exp)
-
-def calculate_loss_sigmoid(y, tx, w):
-    """compute the cost by negative log likelihood."""
-    sigm_tx_w = sigmoid(tx @ w)
-    return - np.sum(y.T @ np.log(sigm_tx_w) \
-                    + (1 - y).T @ np.log(1 - sigm_tx_w))
-
-def calculate_gradient_sigmoid(y, tx, w):
-    """compute the gradient of loss."""
-    return tx.T @ (sigmoid(tx@w) - y)
-
-def learning_by_gradient_descent(y, tx, w, gamma):
-    """
-    Do one step of gradient descent using logistic regression.
-    Return the updated w and loss.
-    """
-    loss = calculate_loss_sigmoid(y, tx, w)
-    gradient = calculate_gradient_sigmoid(y, tx, w)
-    w -= gamma * gradient
-    return w, loss
-
-def reg_logistic_regression(y, tx, w, lambda_):
-    """return the loss and gradient"""
-    loss = calculate_loss_sigmoid(y, tx, w) + lambda_* w.T @ w
-    gradient = calculate_gradient_sigmoid(y, tx, w) + 2 * lambda_ * w
-    return loss, gradient
-
-def learning_by_reg_gradient(y, tx, w, gamma, lambda_):
-    """
-    Do one step of gradient descent, using the regularized logistic regression.
-    Return the updated w and loss.
-    """
-    loss, gradient = reg_logistic_regression(y, tx, w, lambda_)
-    w -= gamma * gradient
-    return w, loss
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
-    threshold = 1e-8
     previous_loss = 0
     w = initial_w
 
-    for iter in range(max_iters):
+    for _ in range(max_iters):
         w, loss = learning_by_gradient_descent(y, tx, w, gamma)
         # converge criterion
         if np.abs(loss - previous_loss) < threshold:
@@ -126,11 +138,10 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
 
 def reg_logistic_regression(y, tx, lambda_, initial_w,
         max_iters, gamma):
-    threshold = 1e-8
     previous_loss = 0
     w = initial_w
 
-    for iter in range(max_iters):
+    for _ in range(max_iters):
         w, loss = learning_by_reg_gradient(y, tx, w, gamma, lambda_)
         # converge criterion
         if np.abs(loss - previous_loss) < threshold:
@@ -141,9 +152,3 @@ def reg_logistic_regression(y, tx, lambda_, initial_w,
     return w, loss
 
 
-################################################################
-def expand_features_polynomial(x, degree):
-    result = np.zeros(x.shape)
-    for i in range(0, degree):
-        result = np.hstack((result, x**i))
-    return result
