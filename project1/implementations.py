@@ -10,8 +10,10 @@ def standardize(x):
 def get_batches(y, tx, num_batches):
     seed = np.random.randint(0,1000000)
     np.random.seed(seed)
-    np.random.shuffle(tx)
-    np.random.shuffle(y)
+    indices = [i for i in range(len(y))]
+    np.random.shuffle(indices)
+    tx = tx[indices]
+    y = y[indices]
     for i in range(num_batches):
         end_indx = min(i+1, len(y))
         if i != end_indx:
