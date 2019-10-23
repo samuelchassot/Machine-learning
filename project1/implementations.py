@@ -25,8 +25,8 @@ def remove_wrong_columns(tx):
     return tx
 
 def expand_features_polynomial(x, degree):
-    result = np.zeros(x.shape)
-    for i in range(0, degree):
+    result = np.ones(x.shape)
+    for i in range(1, degree+1):
         result = np.hstack((result, x**i))
     return result
     
@@ -53,7 +53,7 @@ def compute_gradient(y, tx, w):
 #Helper functions and variables for logistic regression
 
 #Threshold for convergence criterion of both logistic regression
-threshold = 1e-8
+threshold = 1e-4
 
 def sigmoid(t):
     """apply sigmoid function on t."""
