@@ -53,7 +53,7 @@ def compute_gradient(y, tx, w):
 #Helper functions and variables for logistic regression
 
 #Threshold for convergence criterion of both logistic regression
-threshold = 1e-4
+threshold = 1e-8
 
 def sigmoid(t):
     """apply sigmoid function on t."""
@@ -84,7 +84,7 @@ def loss_grad_reg_logistic_regression(y, tx, w, lambda_):
     """return the loss and gradient"""
     loss = calculate_loss_sigmoid(y, tx, w) + lambda_* w.T @ w
     gradient = calculate_gradient_sigmoid(y, tx, w) + 2 * lambda_ * w
-    return loss, gradient
+    return loss/len(y), gradient
 
 def learning_by_reg_gradient(y, tx, w, gamma, lambda_):
     """
@@ -143,8 +143,10 @@ def reg_logistic_regression(y, tx, lambda_, initial_w,
     previous_loss = 0
     w = initial_w
 
-    for _ in range(max_iters):
+    for i in range(max_iters):
         w, loss = learning_by_reg_gradient(y, tx, w, gamma, lambda_)
+        if i%1000 == 0:
+            print("At iteration {i}, loss = {l}".format(i=i, l=loss))
         # converge criterion
         if np.abs(loss - previous_loss) < threshold:
             break
