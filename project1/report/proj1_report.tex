@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{listings}
+
  
 \begin{document}
 \date{2019 October}
@@ -24,7 +25,21 @@
 This is not an abstract.
 \end{abstract}
 
-\subfile{sections/introduction}
+\section{Introduction}
+The goal of the project was to do classification on real data coming from CERN. To do so, we compared different methodology to understand the impact of cleaning the data, using different machine learning algorithms or cross-validation in order to tune the hyperparameters.
+
+We had six algorithms at our disposal but we did most of the work with 
+\begin{lstlisting}
+least_squares_GD 
+ridge_regression
+logistic_regression
+reg_logistic_regression
+\end{lstlisting}
+since the stochastic gradient descent was useful only if we did not want to go to harsh on our computers and that
+\begin{lstlisting}
+least_squares
+\end{lstlisting}
+gave a first result of 37\% accuracy on AIcrowd which was too far behind the other methods.
  
 \section{other section}
 This is not our report.
