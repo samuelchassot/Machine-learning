@@ -15,6 +15,16 @@ def standardize_train_and_test(tX, tX_test):
 
     return tX_stdzed, tX_test_stdzed
 
+def build_k_indices(y, k_fold, seed):
+    np.random.seed(seed)
+
+    num_row = len(y)
+    interval = int(num_row/k_fold)
+    indices = np.random.permutation(num_row)
+    k_indices = [indices[k * interval: (k + 1) * interval] for k in range(k_fold)]
+    
+    return np.array(k_indices)
+
 def get_batches(y, tx, num_batches):
     np.random.seed(np.random.randint(0,1000000))
 
