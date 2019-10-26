@@ -63,8 +63,8 @@ def sigmoid(t):
 def calculate_loss_sigmoid(y, tx, w):
     """compute the cost by negative log likelihood."""
     sigm_tx_w = sigmoid(tx @ w)
-    return - np.sum(y.T @ np.log(sigm_tx_w) \
-                    + (1 - y).T @ np.log(1 - sigm_tx_w))
+    return (- np.sum(y.T @ np.log(sigm_tx_w) \
+                    + (1 - y).T @ np.log(1 - sigm_tx_w)))
 
 def calculate_gradient_sigmoid(y, tx, w):
     """compute the gradient of loss."""
@@ -84,7 +84,7 @@ def loss_grad_reg_logistic_regression(y, tx, w, lambda_):
     """return the loss and gradient"""
     loss = calculate_loss_sigmoid(y, tx, w) + lambda_* w.T @ w
     gradient = calculate_gradient_sigmoid(y, tx, w) + 2 * lambda_ * w
-    return loss/len(y), gradient
+    return loss, gradient
 
 def learning_by_reg_gradient(y, tx, w, gamma, lambda_):
     """
