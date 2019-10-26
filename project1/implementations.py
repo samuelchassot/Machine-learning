@@ -8,6 +8,12 @@ def standardize(x):
 
     return (x-mean)/std, mean, std
 
+def standardize_train_and_test(tX, tX_test):
+    tX_stdzed, tX_mean, tX_std = standardize(tX)
+    tX_test_stdzed = (tX_test-tX_mean)/tX_std
+
+    return tX_stdzed, tX_test_stdzed
+
 def get_batches(y, tx, num_batches):
     np.random.seed(np.random.randint(0,1000000))
 
