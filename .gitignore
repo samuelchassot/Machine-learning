@@ -133,6 +133,5 @@ dmypy.json
 *.log
 *.gz
 *.fls
-*
 *.fls
 *.fdb_latexmk
