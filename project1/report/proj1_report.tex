@@ -65,6 +65,8 @@ This outputs the values for $\lambda$ and $\gamma$ that minimize the test error.
   \lambda &= 10 \\
   \gamma &= 10^{-6}
 \end{align*}
+Then we run the regularized logistic regression algorithm on the whole training with these two values but with $max\_iters = 30000$ to obtain a good $w$ vector.
+
 
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{plots/raw_data_reg_log_regr.png}
