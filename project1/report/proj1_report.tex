@@ -11,7 +11,6 @@
  bottom=20mm
  }
 
-
 \graphicspath{ {./plots/} }
 
 \begin{document}
@@ -36,12 +35,12 @@ The goal of this project is to apply machine learning
 methods learned in class on a real dataset. We take a
 strong interest in testing a lot of techniques and
 comparing their results. This comparison encourage us to
-tweak hyperparameters and check their effectiveness using %Should if be efficient? Not sure
-cross-validation.
+tweak hyperparameters and check their effectiveness using cross-validation.
 
-We do not use least\_squares\_SGD because we consider
-that it would provide us results really close to other
-methods we already use. Finally, we assess the following
+We do not use least\_squares\_SGD because we do not want
+to trade precision for time. We consider
+that it would provide us results close to
+least\_squares\_SGD we already use. Finally, we assess the following
 methods:
 
 \begin{itemize}
