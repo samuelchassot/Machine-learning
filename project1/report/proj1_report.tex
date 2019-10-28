@@ -66,23 +66,15 @@ provide us robust results. With a score of 37\% on
 AICrowd, this is worse than tossing a coin.
 
 \section{Least squares gradient descent}
-To test the efficiency of \textit{least\_squares\_GD} on our dataset, 
-which we standardize, we use cross-validation with five sets 
-to train the hyperparameter $\gamma$.
-In figure \ref{fig:lsgd}, 
-you can observe how fast the cross-validation test error is growing 
-when you change gamma from $0.08$ to $0.09$ 
-but in order to have a more useful representation of the progression of the error, 
-you can take a look at the "raw" plot in figure \ref{fig:raw_clean_lsgd}, 
-which omits the error corresponding to $\gamma = 0.09$.
-The red plot represents the error depending on gamma with the data cleaned.
-For the initial weights chosen, they are first all initialized to $0.5$. 
-We then modify the initial weights it to be closer to the final weights we got. 
-Surprisingly, $0.4$ gives a better accuracy result on AICrowd ($69.7\%$) 
-than $0.0$ ($69.3\%$) which is closer to the final weights 
-in general and ouputs a smaller loss.
-For the number of iterations, $200$ and $1000$ converge almost to the same loss 
-so to be more efficient, we choose $200$.
+We use cross-validation with five sets 
+to train the hyper parameter $\gamma$.
+For the initial weights chosen, they are first all initialized to $0.5$ an then set to $0.4$ 
+since it gives a better accuracy result on AICrowd.
+We do $200$ iterations since the loss stagnates after.
+Figure \ref{fig:lsgd}, 
+represents the fast growing of error 
+when you change gamma from $0.08$ to $0.09$ .
+Figure \ref{fig:raw_clean_lsgd} omits the error corresponding to $\gamma = 0.09$ for the raw data.
 Our best submission with \textit{least\_squares\_GD} using raw data 
 has an accuracy of $69.7\%$ and has, as hyperparameters,
 \begin{lstlisting}
@@ -91,17 +83,17 @@ has an accuracy of $69.7\%$ and has, as hyperparameters,
   initial_weights = [0.4, ..., 0.4]
   gamma = 0.08
 \end{lstlisting}
-With cleaned data, the best submission has $72\%$ and use $\gamma = 0.12$.
+With cleaned data (red line in figure \ref{fig:raw_clean_lsgd}), 
+the best submission has $72\%$ and use $\gamma = 0.12$.
 
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{raw_data_least_squares_GD.png}
   \caption{Linear regression gradient descent}
   \label{fig:lsgd}
 \end{figure}
-
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{raw_vs_clean_lsgd.png}
-  \caption{Raw vs cleaned data for LSGD}
+  \caption{Raw/cleaned data for LSGD}
     \label{fig:raw_clean_lsgd}
 \end{figure}
 
@@ -141,11 +133,9 @@ point.
 \end{figure}
 
 \section{Logistic regression}
-We also use cross-validation to test the efficiency of
-\textit{logistic\_regression} on our standardized dataset.
 We use five sets to set the hyperparameter $\gamma$.
 For the initial weights chosen, they are all initialized to $0.5$ since $0.0, 0.1, ..., 0.6$ do not change the loss a lot but worsen the accuracy on AICrowd.
-Our best submission with \textit{logistic\_regression} using raw data had an accuracy of $73.9\%$ and had 
+Our best submission with raw data had an accuracy of $73.9\%$ and had 
 \begin{lstlisting}
   max_iters = 1000
   k_fold = 5
@@ -157,7 +147,7 @@ You can observe both in figure \ref{fig:raw_clean_log_reg}.
 
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{raw_vs_clean_log_reg.png}
-  \caption{Raw vs cleaned data for logistic regression}
+  \caption{Raw/cleaned data for logistic regression}
   \label{fig:raw_clean_log_reg}
 \end{figure}
 
@@ -165,7 +155,7 @@ You can observe both in figure \ref{fig:raw_clean_log_reg}.
 \section{Regularized logistic regression}
 We implement cross-validation to optimize the values of $\lambda$ and $\gamma$. $\lambda$ takes values
 $\{1,10,100,1000,10000\}$ and $\gamma$ takes values $\{10^{-6},10^{-7},10^{-8},10^{-9}\}$. Taking bigger
-values for $\gamma$ results in the loss taking value $nan$. You can see the test error plotted against $\lambda$ in figure \ref{fig:raw_reg_log_regr}, each line corresponds to a value of $\gamma$. Other parameters are: 
+values for $\gamma$ results in the loss taking value $nan$. You can see the test error plotted against $\lambda$ in figure \ref{fig:raw_reg_log_regr}. Other parameters are: 
 \begin{lstlisting}
   max_iters = 3000
   k_fold = 3
@@ -174,9 +164,9 @@ values for $\gamma$ results in the loss taking value $nan$. You can see the test
 
 This outputs the values for $\lambda$ and $\gamma$ that minimize the test error. These values are:
 $\lambda = 10$ and $\gamma = 10^{-6}$.\\
-Then we run the regularized logistic regression algorithm on the whole training with these two values but with $max\_iters = 30000$ to obtain a good $w$ vector.
+Then we run the regularized logistic regression algorithm on the whole training set with these two values for hyper parameters but with $max\_iters = 30000$ to obtain a good $w$ vector.
 
-The best score on AICrowd achieved using this technique on raw data is 73.7\%. Using cleaned data we achieve 72.5\%.
+The best score on AICrowd achieved using this technique on raw data is 73.7\%. Using cleaned data, we achieve 72.5\%.
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{plots/raw_data_reg_log_regr.png}
   \caption{Regularized logistic regression - HP optimization}
