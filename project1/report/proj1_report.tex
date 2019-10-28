@@ -58,11 +58,11 @@ AICrowd, this is worse than tossing a coin.
 To test the efficiency of \textit{least\_squares\_GD} on our dataset, 
 which we standardize, we use cross-validation with five sets 
 to train the hyperparameter $\gamma$.
-In figure~\ref{fig:lsgd}, 
+In figure \ref{fig:lsgd}, 
 you can observe how fast the cross-validation test error is growing 
 when you change gamma from $0.08$ to $0.09$ 
 but in order to have a more useful representation of the progression of the error, 
-you can take a look at the "raw" plot in figure~\ref{fig:raw_clean}, 
+you can take a look at the "raw" plot in figure \ref{fig:raw_clean_lsgd}, 
 which omits the error corresponding to $\gamma = 0.09$.
 The red plot represents the error depending on gamma with the data cleaned.
 For the initial weights chosen, they are first all initialized to $0.5$. 
@@ -84,11 +84,13 @@ With cleaned data, the best submission has $72\%$ and use $\gamma = 0.12$.
 
 \begin{figure}
   \includegraphics[width=0.4\textwidth]{plots/raw_data_least_squares_GD.png}
+  \caption{Linear regression gradient descent}
   \label{fig:lsgd}
 \end{figure}
 
 \begin{figure}
   \includegraphics[width=0.4\textwidth]{plots/raw_vs_clean_lsgd.png}
+  \caption{Raw vs cleaned data for LSGD}
     \label{fig:raw_clean_lsgd}
 \end{figure}
 
@@ -96,7 +98,7 @@ With cleaned data, the best submission has $72\%$ and use $\gamma = 0.12$.
 Daniel
 
 \section{Logistic regression}
-We also used cross-validation to test the efficiency of
+We also use cross-validation to test the efficiency of
 \textit{logistic\_regression} on our standardized dataset.
 We use five sets to set the hyperparameter $\gamma$.
 For the initial weights chosen, they are all initialized to $0.5$ since $0.0, 0.1, ..., 0.6$ do not change the loss a lot but worsen the accuracy on AICrowd.
