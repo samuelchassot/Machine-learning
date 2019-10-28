@@ -141,10 +141,7 @@ values for $\gamma$ results in the loss taking value $nan$. You can see the test
 \end{lstlisting}
 
 This outputs the values for $\lambda$ and $\gamma$ that minimize the test error. These values are:
-\begin{align*}
-  \lambda &= 10 \\
-  \gamma &= 10^{-6}
-\end{align*}
+$\lambda = 10$ and $\gamma = 10^{-6}$.\\
 Then we run the regularized logistic regression algorithm on the whole training with these two values but with $max\_iters = 30000$ to obtain a good $w$ vector.
 
 The best score on AICrowd achieved using this technique on raw data is 73.7\%. Using cleaned data we achieve 72.5\%.
