@@ -171,7 +171,12 @@ def remove_wrong_columns(tx):
 
 def expand_features_polynomial(x, degree):
     """polynomial basis functions for input data x, for j=0 up to j=degree."""
-    return np.vander(x, degree+1, True)
+    result = np.ones(x.shape)
+    
+    for i in range(1, degree+1):
+        result = np.hstack((result, x**i))
+    
+    return result
 
 
 #Cross-validation
