@@ -1,9 +1,8 @@
 \documentclass[11pt, a4paper, twoside]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
-\usepackage{listings}
+\graphicspath{ {./plots/} }
 
- 
 \begin{document}
 \date{2019 October}
 \title{CS-443 Machine Learning Project 1: J-D-S Team}
@@ -29,7 +28,7 @@ comparing their results. This comparison encourage us to
 tweak hyperparameters and check their effectiveness using
 cross-validation.
 
-We do not use least\_squaresi\_SGD because we consider
+We do not use least\_squares\_SGD because we consider
 that it would provide us results really close to other
 methods we already us. Finally, we assess the following
 methods.
@@ -42,48 +41,54 @@ methods.
   \item reg\_logistic\_regression
 \end{itemize}
  
-\section{other section}
-This is not our report.
-\end{document}
+\section{Least squares}
+Samuel
 
 \section{Least squares gradient descent}
-To test the efficiency of \textit{least_squares_GD} on our dataset, which we standardize, we use cross-validation with five sets to train the hyperparameter $\gamma$.
+To test the efficiency of \textit{least\_squares\_GD} on our dataset, which we standardize, we use cross-validation with five sets to train the hyperparameter $\gamma$.
 In figure~\ref{fig:lsgd}, you can observe how fast the cross-validation test error is growing when you change gamma from $0.08$ to $0.09$ but in order to have a more useful representation of the progression of the error, you can take a look at figure~\ref{fig:lsgd_useful}, which omits the error corresponding to $\gamma = 0.09$.
 For the initial weights chosen, they are first all initialized to $0.5$. We then modify the initial weights it to be closer to the final weights we got. Surprisingly, $0.4$ gives a better accuracy result on AICrowd ($69.7\%$) than $0.0$ ($69.3\%$) which is closer to the final weights in general and ouputs a smaller loss.
 For the number of iterations, $200$ and $1000$ converge almost to the same loss so to be more efficient, we choose $200$.
-Our best submission with \textit{least_squares_GD} has an accuracy of $69.7\%$ and has, as hyperparameters,
-\begin{lstlisting}
-max_iters = 200
-k_fold = 5
-initial_weights = np.array([0.4 for i in range(tX_stdrzed.shape[1])])
-gamma = 0.08
-\end{lstlisting}
+Our best submission with \textit{least\_squares\_GD} has an accuracy of $69.7\%$ and has, as hyperparameters,
+\begin{itemize}
+  \item max\_iters = 200
+  \item k\_fold = 5
+  \item initial\_weights = np.array([0.4 for i in range(tX\_stdrzed.shape[1])])
+  \item gamma = 0.08
+\end{itemize}
 
-\begin{figure}
-    \includegraphics[width= 3, height = 3]{raw_data_least_squares_GD.png}
-    \label{fig:lsgd}
+\begin{figure}[h]
+  \includegraphics[width=0.4\textwidth]{raw_data_least_squares_GD.png}
+  \label{fig:lsgd}
 \end{figure}
 
-\begin{figure}
-    \includegraphics[width= 3, height = 3]{raw_data_least_squares_GD_useful.png}
+\begin{figure}[h]
+  \includegraphics[width=0.4\textwidth]{raw_data_least_squares_GD_useful.png}
     \label{fig:lsgd_useful}
 \end{figure}
 
+\section{Ridge regression}
+Daniel
+
 \section{Logistic regression}
-We also used cross-validation to test the efficiency of \textit{logistic_regression} on our standardized dataset.
+We also used cross-validation to test the efficiency of
+\textit{logistic\_regression} on our standardized dataset.
 We use five sets to set the hyperparameter $\gamma$.
 For the initial weights chosen, they are all initialized to $0.5$ since $0.0, 0.1, ..., 0.6$ do not change the loss a lot but worsen the accuracy on AICrowd.
-Our best submission with \textit{logistic_regression} had an accuracy of $73.9\%$ and had 
-\begin{lstlisting}
-max_iters = 1000
-k_fold = 5
-initial_weights = np.array([0.5 for i in range(tX_stdrzed.shape[1])])
-gamma = 1e-06
-\end{lstlisting}
+Our best submission with \textit{logistic\_regression} had an accuracy of $73.9\%$ and had 
+\begin{itemize}
+  \item max\_iters = 1000
+  \item k\_fold = 5
+  \item initial\_weights = np.array([0.5 for i in range(tX\_stdrzed.shape[1])])
+  \item gamma = 1e-06
+\end{itemize}
 
-\begin{figure}
-    \includegraphics[width= 3, height = 3]{raw_data_logistic_regression.png}
+\begin{figure}[h]
+  \includegraphics[width=0.4\textwidth]{raw_data_logistic_regression.png}
     \label{fig:log_reg}
 \end{figure}
+
+\section{Regularized logistic regression}
+Samuel
 
 \end{document}
