@@ -147,6 +147,7 @@ This outputs the values for $\lambda$ and $\gamma$ that minimize the test error.
 \end{align*}
 Then we run the regularized logistic regression algorithm on the whole training with these two values but with $max\_iters = 30000$ to obtain a good $w$ vector.
 
+The best score on AICrowd achieved using this technique on raw data is 73.7\%. Using cleaned data we achieve 72.5\%.
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{plots/raw_data_reg_log_regr.png}
   \caption{Regularized logistic regression - HP optimization}
