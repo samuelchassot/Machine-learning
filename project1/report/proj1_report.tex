@@ -53,6 +53,13 @@ $\lambda$ takes values $\{1,10,100,1000,10000\}$ and $\gamma$ takes values $\{10
 Taking bigger values for $\gamma$ results in the loss taking value $nan$. 
 You can see the test error plotted against $\lambda$ in \ref{fig:raw_reg_log_regr}, 
 each line corresponds to a value of $\gamma$.
+Other parameters are:
+\begin{lstlisting}
+  max_iters = 3000
+  k_fold = 3
+  w_initial_raw = [0.0, 0.0, ..., 0.0]
+\end{lstlisting}
+This outputs the values for $\lambda$ and $\gamma$ that minimize the test error. These values are:
 
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{plots/raw_data_reg_log_regr.png}
