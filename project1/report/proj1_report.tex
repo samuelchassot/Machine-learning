@@ -1,8 +1,17 @@
-\documentclass[11pt, a4paper, twoside]{article}
+\documentclass[11pt, a4paper, twocolumn]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+ \geometry{
+ left=20mm,
+ right=20mm,
+ top=20mm,
+ bottom=20mm
+ }
+
+
 \graphicspath{ {./plots/} }
 
 \begin{document}
@@ -27,13 +36,13 @@ The goal of this project is to apply machine learning
 methods learned in class on a real dataset. We take a
 strong interest in testing a lot of techniques and
 comparing their results. This comparison encourage us to
-tweak hyperparameters and check their effectiveness using
+tweak hyperparameters and check their effectiveness using %Should if be efficient? Not sure
 cross-validation.
 
 We do not use least\_squares\_SGD because we consider
 that it would provide us results really close to other
-methods we already us. Finally, we assess the following
-methods.
+methods we already use. Finally, we assess the following
+methods:
 
 \begin{itemize}
   \item least\_squares
@@ -47,7 +56,7 @@ methods.
 To clean the data, we remove the features
 that contain $-999.0$ from the training and testing sets. 
 Since they are the same features in both sets, 
-the weights can be trained and used for testing in the same way.
+the weights we obtained from training can be used for testing.
 
 \section{Least squares}
 This method is the simplest to implement but does not
@@ -77,19 +86,19 @@ has an accuracy of $69.7\%$ and has, as hyperparameters,
 \begin{lstlisting}
   max_iters = 200
   k_fold = 5
-  initial_weights = [0.4, 0.4, ..., 0.4]
+  initial_weights = [0.4, ..., 0.4]
   gamma = 0.08
 \end{lstlisting}
 With cleaned data, the best submission has $72\%$ and use $\gamma = 0.12$.
 
-\begin{figure}
-  \includegraphics[width=0.4\textwidth]{plots/raw_data_least_squares_GD.png}
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{raw_data_least_squares_GD.png}
   \caption{Linear regression gradient descent}
   \label{fig:lsgd}
 \end{figure}
 
-\begin{figure}
-  \includegraphics[width=0.4\textwidth]{plots/raw_vs_clean_lsgd.png}
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{raw_vs_clean_lsgd.png}
   \caption{Raw vs cleaned data for LSGD}
     \label{fig:raw_clean_lsgd}
 \end{figure}
@@ -106,14 +115,14 @@ Our best submission with \textit{logistic\_regression} using raw data had an acc
 \begin{lstlisting}
   max_iters = 1000
   k_fold = 5
-  initial_weights = [0.5, 0.5, ..., 0.5]
+  initial_weights = [0.5, ..., 0.5]
   gamma = 1e-06
 \end{lstlisting}
 With cleaned data, the best submission has $72.7\%$ and use $\gamma = 1e-06$.
 You can observe both in figure \ref{fig:raw_clean_log_reg}.
 
-\begin{figure}
-  \includegraphics[width=0.4\textwidth]{plots/raw_vs_clean_log_reg.png}
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{raw_vs_clean_log_reg.png}
   \caption{Raw vs cleaned data for logistic regression}
   \label{fig:raw_clean_log_reg}
 \end{figure}
@@ -126,7 +135,7 @@ values for $\gamma$ results in the loss taking value $nan$. You can see the test
 \begin{lstlisting}
   max_iters = 3000
   k_fold = 3
-  w_initial_raw = [0.0, 0.0, ..., 0.0]
+  w_initial_raw = [0.0, ..., 0.0]
 \end{lstlisting}
 
 This outputs the values for $\lambda$ and $\gamma$ that minimize the test error. These values are:
@@ -137,7 +146,7 @@ This outputs the values for $\lambda$ and $\gamma$ that minimize the test error.
 Then we run the regularized logistic regression algorithm on the whole training with these two values but with $max\_iters = 30000$ to obtain a good $w$ vector.
 
 \begin{figure}[h!]
-  \includegraphics[width=0.5\linewidth]{plots/raw_data_reg_log_regr.png}
+  \includegraphics[width=\linewidth]{plots/raw_data_reg_log_regr.png}
   \caption{Regularized logistic regression - HP optimization}
   \label{fig:raw_reg_log_regr}
 \end{figure}
