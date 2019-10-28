@@ -93,7 +93,7 @@ the best submission has $72\%$ and use $\gamma = 0.12$.
 \end{figure}
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{raw_vs_clean_lsgd.png}
-  \caption{Raw vs cleaned data for LSGD}
+  \caption{Raw/cleaned data for LSGD}
     \label{fig:raw_clean_lsgd}
 \end{figure}
 
@@ -123,11 +123,9 @@ overfitting behaviour.
 \end{figure}
 
 \section{Logistic regression}
-We also use cross-validation to test the efficiency of
-\textit{logistic\_regression} on our standardized dataset.
 We use five sets to set the hyperparameter $\gamma$.
 For the initial weights chosen, they are all initialized to $0.5$ since $0.0, 0.1, ..., 0.6$ do not change the loss a lot but worsen the accuracy on AICrowd.
-Our best submission with \textit{logistic\_regression} using raw data had an accuracy of $73.9\%$ and had 
+Our best submission with raw data had an accuracy of $73.9\%$ and had 
 \begin{lstlisting}
   max_iters = 1000
   k_fold = 5
@@ -139,7 +137,7 @@ You can observe both in figure \ref{fig:raw_clean_log_reg}.
 
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{raw_vs_clean_log_reg.png}
-  \caption{Raw vs cleaned data for logistic regression}
+  \caption{Raw/cleaned data for logistic regression}
   \label{fig:raw_clean_log_reg}
 \end{figure}
 
