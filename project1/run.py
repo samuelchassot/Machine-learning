@@ -11,12 +11,16 @@ print("import test.csv")
 DATA_TEST_PATH = 'data/test.csv'
 _, tX_test, ids_test = load_csv_data(DATA_TEST_PATH)
 
+print("clean data")
+tX = remove_wrong_columns(tX)
+tX_test = remove_wrong_columns(tX_test)
+
 print("standardize tX and tX_test")
 tX_stdzed, tX_test_stdzed = standardize_train_and_test(tX, tX_test)
 
-# this implementation of ridge regression provided us the following result: 0.754 0.563
-
-lambda_ = 0.00026826957952797245
+# this implementation of ridge regression provided us the
+# following result: 0.765 0.627
+lambda_ = 0.00035564803062231287
 degree  = 5
 
 print("expand features tX and tX_test")
