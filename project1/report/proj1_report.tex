@@ -66,23 +66,15 @@ provide us robust results. With a score of 37\% on
 AICrowd, this is worse than tossing a coin.
 
 \section{Least squares gradient descent}
-To test the efficiency of \textit{least\_squares\_GD} on our dataset, 
-which we standardize, we use cross-validation with five sets 
-to train the hyperparameter $\gamma$.
-In figure \ref{fig:lsgd}, 
-you can observe how fast the cross-validation test error is growing 
-when you change gamma from $0.08$ to $0.09$ 
-but in order to have a more useful representation of the progression of the error, 
-you can take a look at the "raw" plot in figure \ref{fig:raw_clean_lsgd}, 
-which omits the error corresponding to $\gamma = 0.09$.
-The red plot represents the error depending on gamma with the data cleaned.
-For the initial weights chosen, they are first all initialized to $0.5$. 
-We then modify the initial weights it to be closer to the final weights we got. 
-Surprisingly, $0.4$ gives a better accuracy result on AICrowd ($69.7\%$) 
-than $0.0$ ($69.3\%$) which is closer to the final weights 
-in general and ouputs a smaller loss.
-For the number of iterations, $200$ and $1000$ converge almost to the same loss 
-so to be more efficient, we choose $200$.
+We use cross-validation with five sets 
+to train the hyper parameter $\gamma$.
+For the initial weights chosen, they are first all initialized to $0.5$ an then set to $0.4$ 
+since it gives a better accuracy result on AICrowd.
+We do $200$ iterations since the loss stagnates after.
+Figure \ref{fig:lsgd}, 
+represents the fast growing of error 
+when you change gamma from $0.08$ to $0.09$ .
+Figure \ref{fig:raw_clean_lsgd} omits the error corresponding to $\gamma = 0.09$ for the raw data.
 Our best submission with \textit{least\_squares\_GD} using raw data 
 has an accuracy of $69.7\%$ and has, as hyperparameters,
 \begin{lstlisting}
@@ -91,14 +83,14 @@ has an accuracy of $69.7\%$ and has, as hyperparameters,
   initial_weights = [0.4, ..., 0.4]
   gamma = 0.08
 \end{lstlisting}
-With cleaned data, the best submission has $72\%$ and use $\gamma = 0.12$.
+With cleaned data (red line in figure \ref{fig:raw_clean_lsgd}), 
+the best submission has $72\%$ and use $\gamma = 0.12$.
 
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{raw_data_least_squares_GD.png}
   \caption{Linear regression gradient descent}
   \label{fig:lsgd}
 \end{figure}
-
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{raw_vs_clean_lsgd.png}
   \caption{Raw vs cleaned data for LSGD}
