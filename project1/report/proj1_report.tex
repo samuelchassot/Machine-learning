@@ -63,18 +63,18 @@ the weights we obtained from training can be used for testing.
 \section{Least squares}
 This method is the simplest to implement but does not
 provide us robust results. With a score of 37\% on
-AICrowd, this is worse than tossing a coin.
+AICrowd, this is worse than tossing a coin as it predicts -1 for every sample. 
 
 \section{Least squares gradient descent}
-We use cross-validation with five sets 
-to train the hyper parameter $\gamma$.
-For the initial weights chosen, they are first all initialized to $0.5$ an then set to $0.4$ 
+We use 5 folds cross-validation
+to train the hyper parameter gamma.
+For the initial weights chosen, they are first all initialized to $0.5$ and then set to $0.4$ 
 since it gives a better accuracy result on AICrowd.
 We do $200$ iterations since the loss stagnates after.
 Figure \ref{fig:lsgd}, 
 represents the fast growing of error 
 when you change gamma from $0.08$ to $0.09$ .
-Figure \ref{fig:raw_clean_lsgd} omits the error corresponding to $\gamma = 0.09$ for the raw data.
+Figure \ref{fig:raw_clean_lsgd} omits the error corresponding to $gamma = 0.09$ for the raw data.
 Our best submission with \textit{least\_squares\_GD} using raw data 
 has an accuracy of $69.7\%$ and has, as hyperparameters,
 \begin{lstlisting}
@@ -84,7 +84,7 @@ has an accuracy of $69.7\%$ and has, as hyperparameters,
   gamma = 0.08
 \end{lstlisting}
 With cleaned data (red line in figure \ref{fig:raw_clean_lsgd}), 
-the best submission has $72\%$ and use $\gamma = 0.12$.
+the best submission has $72\%$ and use $gamma = 0.12$.
 
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{raw_data_least_squares_GD.png}
@@ -115,8 +115,8 @@ close  as shown in figure
 \ref{fig:ridge_raw}. As shown in figure
 \ref{fig:ridge_clean}, cleaning the data
 gives us slightly better results. The used
-parameters for the best score on AICrowd
-as well as in the run.py  are shown in
+parameters for the best score on AICrowd (76.5\%)
+as well as in the run.py are shown in
 \ref{fig:ridge_clean} by a light blue
 point.
 
@@ -133,16 +133,16 @@ point.
 \end{figure}
 
 \section{Logistic regression}
-We use five sets to set the hyperparameter $\gamma$.
+We use five sets to set the hyperparameter gamma.
 For the initial weights chosen, they are all initialized to $0.5$ since $0.0, 0.1, ..., 0.6$ do not change the loss a lot but worsen the accuracy on AICrowd.
 Our best submission with raw data had an accuracy of $73.9\%$ and had 
 \begin{lstlisting}
   max_iters = 1000
   k_fold = 5
   initial_weights = [0.5, ..., 0.5]
-  gamma = 1e-06
+  gamma = 1e-6
 \end{lstlisting}
-With cleaned data, the best submission has $72.7\%$ and use $\gamma = 1e-06$.
+With cleaned data, the best submission has $72.7\%$ and use $gamma = 10^{-6}$.
 You can observe both in figure \ref{fig:raw_clean_log_reg}.
 
 \begin{figure}[h!]
@@ -153,17 +153,17 @@ You can observe both in figure \ref{fig:raw_clean_log_reg}.
 
 \newpage
 \section{Regularized logistic regression}
-We implement cross-validation to optimize the values of $\lambda$ and $\gamma$. $\lambda$ takes values
-$\{1,10,100,1000,10000\}$ and $\gamma$ takes values $\{10^{-6},10^{-7},10^{-8},10^{-9}\}$. Taking bigger
-values for $\gamma$ results in the loss taking value $nan$. You can see the test error plotted against $\lambda$ in figure \ref{fig:raw_reg_log_regr}. Other parameters are: 
+We implement cross-validation to optimize the values of lambda and gamma. lambda takes values
+$\{1,10,100,1000,10000\}$ and gamma takes values $\{10^{-6},10^{-7},10^{-8},10^{-9}\}$. Taking bigger
+values for gamma results in the loss taking value $nan$. You can see the test error plotted against lambda in figure \ref{fig:raw_reg_log_regr}. Other parameters are: 
 \begin{lstlisting}
   max_iters = 3000
   k_fold = 3
   w_initial_raw = [0.0, ..., 0.0]
 \end{lstlisting}
 
-This outputs the values for $\lambda$ and $\gamma$ that minimize the test error. These values are:
-$\lambda = 10$ and $\gamma = 10^{-6}$.\\
+This outputs the values for lambda and gamma that minimize the test error. These values are:
+$lambda = 10$ and $gamma = 10^{-6}$.\\
 Then we run the regularized logistic regression algorithm on the whole training set with these two values for hyper parameters but with $max\_iters = 30000$ to obtain a good $w$ vector.
 
 The best score on AICrowd achieved using this technique on raw data is 73.7\%. Using cleaned data, we achieve 72.5\%.
