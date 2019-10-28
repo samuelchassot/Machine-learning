@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{listings}
+\usepackage{amsmath,amsfonts,amssymb}
 
  
 \begin{document}
@@ -60,6 +61,10 @@ Other parameters are:
   w_initial_raw = [0.0, 0.0, ..., 0.0]
 \end{lstlisting}
 This outputs the values for $\lambda$ and $\gamma$ that minimize the test error. These values are:
+\begin{align*}
+  \lambda &= 10 \\
+  \gamma &= 10^{-6}
+\end{align*}
 
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{plots/raw_data_reg_log_regr.png}
