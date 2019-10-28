@@ -110,13 +110,23 @@ We first train our ridge regression model on raw data by
 expanding its features polynomially for degrees from 1 up
 to 15 and lambdas on a
 logarithmic scale from $10^{-30}$ to
-$10^0$ sampled at 30 points. Using 5-folds cross validation, we deduce that
+$10^0$ sampled at 50 points. Using 5-folds cross validation, we deduce that
 polynomials of smaller degrees may underfit the data as
 the models better fit the data with the smaller lambdas.
 On the other hand, using polynomials of degree higher than
 7 shows unconsistent and unrobust results. The train error
 is minimized using bigger lambdas, which may explain an
-overfitting behaviour.
+overfitting behaviour. The sweet spot
+seems to be around degree 5 even if on
+the local dataset, the results are very
+close  as shown in figure
+\ref{fig:ridge_raw}. As shown in figure
+\ref{fig:ridge_clean}, cleaning the data
+gives us slightly better results. The used
+parameters for the best score on AICrowd
+as well as in the run.py  are shown in
+\ref{fig:ridge_clean} by a light blue
+point.
 
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{plots/ridge_raw.png}
