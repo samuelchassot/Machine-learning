@@ -80,12 +80,12 @@ We also used cross-validation to test the efficiency of
 We use five sets to set the hyperparameter $\gamma$.
 For the initial weights chosen, they are all initialized to $0.5$ since $0.0, 0.1, ..., 0.6$ do not change the loss a lot but worsen the accuracy on AICrowd.
 Our best submission with \textit{logistic\_regression} had an accuracy of $73.9\%$ and had 
-\begin{itemize}
-  \item max\_iters = 1000
-  \item k\_fold = 5
-  \item initial\_weights = np.array([0.5 for i in range(tX\_stdrzed.shape[1])])
-  \item gamma = 1e-06
-\end{itemize}
+\begin{lstlisting}
+  max_iters = 1000
+  k_fold = 5
+  initial_weights = [0.5, 0.5, ..., 0.5]
+  gamma = 1e-06
+\end{lstlisting}
 
 \begin{figure}[h]
   \includegraphics[width=0.4\textwidth]{raw_data_logistic_regression.png}
