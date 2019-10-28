@@ -3,28 +3,6 @@ import matplotlib.pyplot as plt
 
 THRESHOLD = 1e-8
 
-def standardize(x):
-    mean = np.mean(x)
-    std = np.std(x)
-
-    return (x-mean)/std, mean, std
-
-def standardize_train_and_test(tX, tX_test):
-    tX_stdzed, tX_mean, tX_std = standardize(tX)
-    tX_test_stdzed = (tX_test-tX_mean)/tX_std
-
-    return tX_stdzed, tX_test_stdzed
-
-def build_k_indices(y, k_fold, seed):
-    np.random.seed(seed)
-
-    num_row = len(y)
-    interval = int(num_row/k_fold)
-    indices = np.random.permutation(num_row)
-    k_indices = [indices[k * interval: (k + 1) * interval] for k in range(k_fold)]
-    
-    return np.array(k_indices)
-
 def get_batches(y, tx, num_batches):
     np.random.seed(np.random.randint(0,1000000))
 
@@ -38,20 +16,6 @@ def get_batches(y, tx, num_batches):
         end_indx = min(i+1, len(y))
         if i != end_indx:
             yield y[i: end_indx], tx[i: end_indx]
-
-def remove_wrong_columns(tx):
-    for c in np.flip(np.where(np.any(tx == -999.0, axis = 0))):
-        tx = np.delete(tx, c, axis = 1)
-    
-    return tx
-
-def expand_features_polynomial(x, degree):
-    result = np.ones(x.shape)
-    
-    for i in range(1, degree+1):
-        result = np.hstack((result, x**i))
-    
-    return result
     
 def mse(e):
     return 1/2*np.mean(e**2)
@@ -157,3 +121,179 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
         previous_loss = loss
 
     return w, loss
+
+
+#Helpers to improve data
+def standardize(x):
+    mean = np.mean(x)
+    std = np.std(x)
+
+    return (x-mean)/std, mean, std
+
+def standardize_train_and_test(tX, tX_test):
+    tX_stdzed, tX_mean, tX_std = standardize(tX)
+    tX_test_stdzed = (tX_test-tX_mean)/tX_std
+
+    return tX_stdzed, tX_test_stdzed
+
+def remove_wrong_columns(tx):
+    for c in np.flip(np.where(np.any(tx == -999.0, axis = 0))):
+        tx = np.delete(tx, c, axis = 1)
+    
+    return tx
+
+def expand_features_polynomial(x, degree):
+    """polynomial basis functions for input data x, for j=0 up to j=degree."""
+    return np.vander(x, degree+1, True)
+
+
+#Cross-validation
+
+#Cross-validation helpers
+def build_k_indices(y, k_fold, seed):
+    np.random.seed(seed)
+
+    num_row = len(y)
+    interval = int(num_row/k_fold)
+    indices = np.random.permutation(num_row)
+    k_indices = [indices[k * interval: (k + 1) * interval] for k in range(k_fold)]
+    
+    return np.array(k_indices)
+
+def divide_train_test(y, tx, k_indices, k):
+    tr_indice = k_indices[~(np.arange(k_indices.shape[0]) == k)].reshape(-1)
+    test_tx = tx[k_indices[k]]
+    test_y = y[k_indices[k]]
+    train_tx = tx[tr_indice]
+    train_y = y[tr_indice]
+    
+    return test_tx, test_y, train_tx, train_y
+
+def map_label_01(y):
+    y_logistic = []
+    for elem in y:
+        if elem == -1:
+            y_logistic.append(0)
+        else:
+            y_logistic.append(1)
+            
+    return np.asarray(y_logistic)
+
+#Cross-validation function
+def cross_validation_least_squares_GD(y, tx, initial_w, max_iters, gammas, k_fold, seed):
+    """Do cross-validation to find the best gamma to use with least_squares_GD"""
+    # split data in k fold
+    k_indices = build_k_indices(y, k_fold, seed)
+    
+    mse_tr = []
+    mse_te = []
+    
+    weights = initial_w
+    
+    for gamma in gammas:
+        tr_tmp = []
+        te_tmp = []
+        for k in range(k_fold):
+            # divide the data into training set and testing set depending on k
+            test_tx, test_y, train_tx, train_y = divide_train_test(y, tx, k_indices, k)
+            
+            #Train the set and computes the losses
+            weights, loss_tr = least_squares_GD(train_y, train_tx, initial_w, max_iters, gamma)
+            loss_te = compute_loss(mse, test_y, test_tx, weights)
+            
+            tr_tmp.append(loss_tr)
+            te_tmp.append(loss_te)
+        mse_tr.append(np.mean(tr_tmp))
+        mse_te.append(np.mean(te_tmp))
+
+    gamma = gammas[np.argmin(mse_te)]
+    weights_final, loss = least_squares_GD(y, tx, initial_w, max_iters, gamma)
+        
+    return mse_tr, mse_te, gamma, weights_final, loss
+
+def ridge_cross_validation(y, x, k_indices, k, lambda_, degree):
+    train_y, train_x, test_y, test_x = np.array([]), np.array([]), np.array([]), np.array([])
+    
+    for k_ in range(len(k_indices)):
+        temp_y = y.take(k_indices[k_])
+        temp_x = x.take(k_indices[k_])
+        
+        if k_ != k:
+            train_y = np.concatenate((train_y, temp_y))
+            train_x = np.concatenate((train_x, temp_x))
+        else:
+            test_y = np.concatenate((test_y, temp_y))
+            test_x = np.concatenate((test_x, temp_x))
+    
+    train_poly = expand_features_polynomial(train_x, degree)
+    test_poly = expand_features_polynomial(test_x, degree)
+    
+    w, loss_tr = ridge_regression(train_y, train_poly, lambda_)
+    loss_te = compute_loss(mse, test_y, test_poly, w)
+    
+    return loss_tr, loss_te
+
+def cross_validation_logistic_regression(y, tx, initial_w, max_iters, gammas, k_fold, seed):
+    """Do cross-validation to find the best gamma to use with logistic regression"""
+    # split data in k fold
+    k_indices = build_k_indices(y, k_fold, seed)
+    
+    loss_sigmoid_tr = []
+    loss_sigmoid_te = []
+    
+    weights = initial_w
+    
+    for gamma in gammas:
+        tr_tmp = []
+        te_tmp = []
+        for k in range(k_fold):
+            # divide the data into training set and testing set depending on k
+            test_tx, test_y, train_tx, train_y = divide_train_test(y, tx, k_indices, k)
+            
+            #Train the set and computes the losses
+            weights, loss_tr = logistic_regression(train_y, train_tx, initial_w, max_iters, gamma)
+            loss_te = compute_loss_sigmoid(test_y, test_tx, weights)
+            
+            tr_tmp.append(loss_tr)
+            te_tmp.append(loss_te)
+        loss_sigmoid_tr.append(np.mean(tr_tmp))
+        loss_sigmoid_te.append(np.mean(te_tmp))
+        
+    gamma = gammas[np.argmin(loss_sigmoid_te)]
+    weights_final, loss_sigmoid = logistic_regression(y, tx, initial_w, max_iters, gamma)
+        
+    return loss_sigmoid_tr, loss_sigmoid_te, gamma, weights_final, loss_sigmoid
+
+def cross_validation_reg_log_regr(y, tx, w_initial, max_iters, gammas, lambdas_, k_fold, seed):
+    k_indices = build_k_indices(y, k_fold, seed)
+    tr_losses = np.zeros((len(gammas), len(lambdas_)))
+    te_losses = np.zeros((len(gammas), len(lambdas_)))
+
+    for gamma_index,gamma in zip(range(len(gammas)), gammas):
+        for lambda_index, lambda_ in zip(range(len(lambdas_)),lambdas_):
+            tr_k_losses = np.zeros((k_fold))
+            te_k_losses = np.zeros((k_fold))
+
+            for k in range(k_fold):
+                te_tx_k, te_y_k, tr_tx_k, tr_y_k = divide_train_test(y, tx, k_indices, k)
+                
+                w_k, tr_loss_k = reg_logistic_regression(tr_y_k, tr_tx_k, lambda_, w_initial, max_iters, gamma)
+                
+                te_loss_k = compute_loss_sigmoid(te_y_k, te_tx_k, w_k)
+                
+                tr_k_losses[k] = tr_loss_k
+                te_k_losses[k] = te_loss_k
+                
+            tr_loss = np.mean(tr_k_losses)
+            te_loss = np.mean(te_k_losses)
+            
+            tr_losses[gamma_index][lambda_index] = tr_loss
+            te_losses[gamma_index][lambda_index] = te_loss
+            
+            argmin = np.argmin(te_losses)
+            gamma_idx = argmin//len(lambdas_)
+            lambda_idx = argmin%len(lambdas_)
+            gamma = gammas[gamma_idx]
+            lambda_ = lambdas_[lambda_idx]
+
+    return tr_losses, te_losses, gamma, lambda_
