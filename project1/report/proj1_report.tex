@@ -106,7 +106,29 @@ With cleaned data, the best submission has $72\%$ and use $\gamma = 0.12$.
 \end{figure}
 
 \section{Ridge regression}
-Daniel
+We first train our ridge regression model on raw data by
+expanding its features polynomially for degrees from 1 up
+to 15 and lambdas on a
+logarithmic scale from $10^{-30}$ to
+$10^0$ sampled at 30 points. Using 5-folds cross validation, we deduce that
+polynomials of smaller degrees may underfit the data as
+the models better fit the data with the smaller lambdas.
+On the other hand, using polynomials of degree higher than
+7 shows unconsistent and unrobust results. The train error
+is minimized using bigger lambdas, which may explain an
+overfitting behaviour.
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{plots/ridge_raw.png}
+  \caption{Ridge regression on raw data}
+  \label{fig:ridge_raw}
+\end{figure}
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{plots/ridge_clean.png}
+  \caption{Ridge regression on raw data}
+  \label{fig:ridge_clean}
+\end{figure}
 
 \section{Logistic regression}
 We also use cross-validation to test the efficiency of
