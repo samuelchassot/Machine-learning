@@ -2,6 +2,8 @@ project01/data/
 project02/Datasets/
 
 *.txt
+*.pkl
+*.npy
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
