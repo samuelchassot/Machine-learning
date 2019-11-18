@@ -30,4 +30,10 @@ def tweet_means(file_name, word_embeddings, words_list, embedding_size):
     tweets_vec = np.array(tweets_vec)
     return tweets_vec
 
+def remove_duplicated_tweets(X, y):
+    np.hstack((X, y.reshape((len(y),1))))
+    tmp = np.unique(tmp, axis=0)
 
+    new_X = tmp[:,:-1]
+    new_y= tmp[:,-1]
+    return new_X, new_y
