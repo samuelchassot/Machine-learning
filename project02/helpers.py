@@ -10,17 +10,21 @@ def words_list(file_name):
     f.close()
     return words_list
 
-def tweet_means(file_name, word_embeddings, words_list, embedding_size):
+def tweets_txt(file_name):
     tweets_txt = []
     f = open(file_name, "r")
     for l in f.readlines():
         tweets_txt.append(l.strip())
-    tweets_pos_txt = np.array(tweets_txt)
     f.close()
+    return np.array(tweets_txt)
 
+def tweet_means(tweets_txt, word_embeddings, words_list, embedding_size, clean = false, common = []):
     tweets_vec = []
     for tw in tweets_txt:
         words_in_tweet = tw.split(" ")
+        if(clean):
+            words_in_tweet = remove_words(words_in_tweet, common)
+            words_in_tweet = remove_exclamation(words_in_tweet)
         acc = np.zeros(embedding_size)
         for w in words_in_tweet:
             vec = word_embeddings[np.argmax(words_list==w)]
@@ -30,6 +34,9 @@ def tweet_means(file_name, word_embeddings, words_list, embedding_size):
     tweets_vec = np.array(tweets_vec)
     return tweets_vec
 
+def remove_duplicated_tweets_txt(tweets):
+    return np.unique(tweets, axis = 0)
+
 def remove_duplicated_tweets(X, y):
     np.hstack((X, y.reshape((len(y),1))))
     tmp = np.unique(tmp, axis=0)
@@ -37,3 +44,14 @@ def remove_duplicated_tweets(X, y):
     new_X = tmp[:,:-1]
     new_y= tmp[:,-1]
     return new_X, new_y
+
+def remove_words(words, tweet):
+    """ Remove the words that are in the list <words> from the tweets """
+    filtered_tweet = [w for w in tweet if w not in words]   
+    return filtered_tweets
+
+def remove_exclamation(tweet):
+    """ Remove the "!!!" that may be at the beginning of tweets """
+    if(tweet[0:3] == ['!', '!', '!']):
+        return tweet[3:]
+    return tweet
