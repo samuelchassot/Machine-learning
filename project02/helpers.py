@@ -18,7 +18,7 @@ def tweets_txt(file_name):
     f.close()
     return np.array(tweets_txt)
 
-def tweet_means(tweets_txt, word_embeddings, words_list, embedding_size, clean = false, common = []):
+def tweet_means(tweets_txt, word_embeddings, words_list, embedding_size, clean = False, common = []):
     tweets_vec = []
     for tw in tweets_txt:
         words_in_tweet = tw.split(" ")
@@ -38,7 +38,7 @@ def remove_duplicated_tweets_txt(tweets):
     return np.unique(tweets, axis = 0)
 
 def remove_duplicated_tweets(X, y):
-    np.hstack((X, y.reshape((len(y),1))))
+    tmp = np.hstack((X, y.reshape((len(y),1))))
     tmp = np.unique(tmp, axis=0)
 
     new_X = tmp[:,:-1]
