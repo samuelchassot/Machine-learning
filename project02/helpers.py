@@ -1,4 +1,5 @@
 import numpy as np 
+from pattern.en import *
 
 def words_list(file_name):
     words_list = []
@@ -18,7 +19,7 @@ def tweets_txt(file_name):
     f.close()
     return np.array(tweets_txt)
 
-def tweet_means(tweets_txt, word_embeddings, words_list, embedding_size, clean = false, common = []):
+def tweet_means(tweets_txt, word_embeddings, words_list, embedding_size, clean = False, common = []):
     tweets_vec = []
     for tw in tweets_txt:
         words_in_tweet = tw.split(" ")
@@ -55,3 +56,23 @@ def remove_exclamation(tweet):
     if(tweet[0:3] == ['!', '!', '!']):
         return tweet[3:]
     return tweet
+
+def transform_negation(tweet):
+    """Transform a negated verb into an infinitive form + not
+        ex: don't -> do not
+    """
+    new_tweet = []
+    for w in tweet:
+        #We check if the verb is negated and if the pattern library knows its infinitive form
+        if("n't" in w and conjugate(w) != w):
+            new_tweet.append(conjugate(w))
+            new_tweet.append("not")
+        else:
+            new_tweet.append(w)
+    
+    return w
+
+def transform_spelling(tweet, spelling_dict):
+    """ Replace the words of a tweet by another spelling if they are in <spelling_dict> """
+    new_tweet = [spelling_dict.get(w, w) for w in tweet]
+    return new_tweet
