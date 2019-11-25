@@ -1,4 +1,13 @@
 import numpy as np 
+from pattern.en import *
+
+#Spelling changes
+spelling_dict = {"u" : "you", "dont" : "don't", "cant" : "can't", "r" : "are", "wont" : "won't"}
+
+#Common words to remove
+common = ['"', ',', '.', ')', '(', '-', \
+          "<url>", "a", "the", "of", "to", \
+          "it", "this", "that", "these", "there"]
 
 def words_list(file_name):
     words_list = []
@@ -18,10 +27,17 @@ def tweets_txt(file_name):
     f.close()
     return np.array(tweets_txt)
 
-def tweet_means(tweets_txt, word_embeddings, words_list, embedding_size, clean = False, common = []):
+def tweet_means(tweets_txt, word_embeddings, words_list, embedding_size, \
+                spelling=False, spelling_dict=dict(), \
+                negation=False, \
+                clean=False, common=[]):
     tweets_vec = []
     for tw in tweets_txt:
         words_in_tweet = tw.split(" ")
+        if(spelling):
+            words_in_tweet = transform_spelling(words_in_tweet, spelling_dict)
+        if(negation):
+            words_in_tweet = transform_negation(words_in_tweet)
         if(clean):
             words_in_tweet = remove_words(words_in_tweet, common)
             words_in_tweet = remove_exclamation(words_in_tweet)
@@ -48,10 +64,30 @@ def remove_duplicated_tweets(X, y):
 def remove_words(words, tweet):
     """ Remove the words that are in the list <words> from the tweets """
     filtered_tweet = [w for w in tweet if w not in words]   
-    return filtered_tweets
+    return filtered_tweet
 
 def remove_exclamation(tweet):
     """ Remove the "!!!" that may be at the beginning of tweets """
     if(tweet[0:3] == ['!', '!', '!']):
         return tweet[3:]
     return tweet
+
+def transform_negation(tweet):
+    """Transform a negated verb into an infinitive form + not
+        ex: don't -> do not
+    """
+    new_tweet = []
+    for w in tweet:
+        #We check if the verb is negated and if the pattern library knows its infinitive form
+        if("n't" in w and conjugate(w) != w):
+            new_tweet.append(conjugate(w))
+            new_tweet.append("not")
+        else:
+            new_tweet.append(w)
+    
+    return w
+
+def transform_spelling(tweet, spelling_dict):
+    """ Replace the words of a tweet by another spelling if they are in <spelling_dict> """
+    new_tweet = [spelling_dict.get(w, w) for w in tweet]
+    return new_tweet
