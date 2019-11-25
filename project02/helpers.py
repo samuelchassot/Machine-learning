@@ -1,6 +1,14 @@
 import numpy as np 
 from pattern.en import *
 
+#Spelling changes
+spelling_dict = {"u" : "you", "dont" : "don't", "cant" : "can't", "r" : "are", "wont" : "won't"}
+
+#Common words to remove
+common = ['"', ',', '.', ')', '(', '-', \
+          "<url>", "a", "the", "of", "to", \
+          "it", "this", "that", "these", "there"]
+
 def words_list(file_name):
     words_list = []
     f = open(file_name, "r")
