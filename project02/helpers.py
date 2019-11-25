@@ -19,10 +19,17 @@ def tweets_txt(file_name):
     f.close()
     return np.array(tweets_txt)
 
-def tweet_means(tweets_txt, word_embeddings, words_list, embedding_size, clean = False, common = []):
+def tweet_means(tweets_txt, word_embeddings, words_list, embedding_size, \
+                spelling=False, spelling_dict=dict(), \
+                negation=False, \
+                clean=False, common=[]):
     tweets_vec = []
     for tw in tweets_txt:
         words_in_tweet = tw.split(" ")
+        if(spelling):
+            words_in_tweet = transform_spelling(words_in_tweet, spelling_dict)
+        if(negation):
+            words_in_tweet = transform_negation(words_in_tweet)
         if(clean):
             words_in_tweet = remove_words(words_in_tweet, common)
             words_in_tweet = remove_exclamation(words_in_tweet)
@@ -49,7 +56,7 @@ def remove_duplicated_tweets(X, y):
 def remove_words(words, tweet):
     """ Remove the words that are in the list <words> from the tweets """
     filtered_tweet = [w for w in tweet if w not in words]   
-    return filtered_tweets
+    return filtered_tweet
 
 def remove_exclamation(tweet):
     """ Remove the "!!!" that may be at the beginning of tweets """
