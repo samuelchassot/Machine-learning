@@ -85,7 +85,7 @@ def transform_negation(tweet):
         else:
             new_tweet.append(w)
     
-    return w
+    return new_tweet
 
 def transform_spelling(tweet, spelling_dict):
     """ Replace the words of a tweet by another spelling if they are in <spelling_dict> """

@@ -5,9 +5,9 @@ import pickle
 import random
 
 
-def main():
+def main(file_name = 'cooc.pkl'):
     print("loading cooccurrence matrix")
-    with open('cooc.pkl', 'rb') as f:
+    with open(file_name, 'rb') as f:
         cooc = pickle.load(f)
     print("{} nonzero entries".format(cooc.nnz))
 
@@ -15,7 +15,7 @@ def main():
     print("using nmax =", nmax, ", cooc.max() =", cooc.max())
 
     print("initializing embeddings")
-    embedding_dim = 200
+    embedding_dim = 250
     xs = np.random.normal(size=(cooc.shape[0], embedding_dim))
     ys = np.random.normal(size=(cooc.shape[1], embedding_dim))
 
