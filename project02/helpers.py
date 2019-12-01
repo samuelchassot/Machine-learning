@@ -32,6 +32,7 @@ def tweet_means(tweets_txt, word_embeddings, words_list, embedding_size, \
                 negation=False, \
                 clean=False, common=[]):
     tweets_vec = []
+    i = 0
     for tw in tweets_txt:
         words_in_tweet = tw.split(" ")
         if(spelling):
@@ -47,6 +48,9 @@ def tweet_means(tweets_txt, word_embeddings, words_list, embedding_size, \
             acc += vec
         acc = acc/len(words_in_tweet)
         tweets_vec.append(acc)
+        if i%1000 == 0:
+            print(i, " done")
+        i += 1
     tweets_vec = np.array(tweets_vec)
     return tweets_vec
 
