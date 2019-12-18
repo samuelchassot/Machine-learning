@@ -31,12 +31,11 @@
 \clearpage
 
 \section{Introduction}
-The goal of the project was to classify a set of tweets as positive or negative content. We try to use different methods to achieve this goal:
+The goal of the project was to classify a set of tweets as positive or negative content. We try to use different methods to achieve this goal.
 
 \begin{itemize}
-  \item SVM
-  \item SGD
   \item Neural Nets
+	\item Logistic Regression and Support-Vector Machine
 \end{itemize}
 
 \section{Embedding and Neural Nets}
@@ -49,10 +48,32 @@ We try lots of NN configuration (at random but manually chosen). The one that gi
 the best achieve 84.3\% on Aiwrowd has one input layer of $200$, one hidden layer of $100,000$, one dropout layer with $p=0.15$ and an output layer of 2 nodes. All hidden layers use the ReLU function, we try others but that give poor results. The output layer uses softmax activation function.
 
 We use standard accuracy as loss function. The optimizer used is first 'Adam' which we replace by SGD for better results.
-\section{Logistic Regression and Support Vector Machine}
+
+\section{Logistic Regression and Support-Vector Machine}
+In this section we take a different approach compared to the last one about neural nets. First, we present the preprocessing steps we applied to clean, normalize and transforme the provided tweets datasets. Then, we compare them by training two models using support-vector machine and logistic regression classifier. Finally, we optimize the most accurate models.
+
 \subsection{Preprocessing}
+We applied three differents kinds of preprocessing steps.
+\begin{itemize}
+	\item Removing or replacing words and symbols.
+	\item Normalizing by modifying words or sentences.
+	\item Transforming the tweets into usable data structures for machine learning.
+\end{itemize}
+
+\subsubsection{Tweet Cleaning}
+\subsubsection{Duplicate}
+\subsubsection{Stemming}
+\subsubsection{Lemmatization}
+\subsubsection{Stop Words}
+\subsubsection{Stop Words}
+\subsubsection{Vectorization}
+\subsubsection{Term Frequency-Inverse Document Frequency}
+
 \subsection{Logistic Regression}
+
 \subsection{SVM}
+
 \subsection{Optimization of SVM}
+
 \end{document}
 
