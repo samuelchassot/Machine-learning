@@ -41,7 +41,11 @@ The goal of the project was to classify a set of tweets as positive or negative 
 
 \section{Embedding and Neural Nets}
 The first part is to transform each tweets in a vector. We first try using an implementation of the GloVE algorithm of our own, the results are not very satisfiing (65\%-70\%). We then use an embedding created by the Stanford University which is also based on GloVE and that used a big Twitter dataset. We decide to use the 200 features version.
+We then compute the vector for each tweets as the numerical average of each vector corresponding to the words of which it is composed.
 
+To do the Neural Nets and the training, we use Tensorflow library from Google and run it on a Google Colab notebook to have access to the GPUs they offer.
 
+We try lots of NN configuration (at random but manually chosen). The one that give best results are the one with few hidden layers but lots of neuron per layer. We also add in some of them some Dropout layers with $p\in [0.05, 0.2]$ depending of the size of the layer before.
+the best achieve 84.3\% on Aiwrowd has one input layer of $200$, one hidden layer of $100,000$, one dropout layer with $p=0.15$ and an output layer of 2 nodes. All hidden layers use the ReLU function, we try others but that give poor results. The output layer uses softmax activation function.
 \end{document}
 
