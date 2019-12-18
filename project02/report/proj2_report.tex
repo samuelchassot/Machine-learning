@@ -73,7 +73,7 @@ Here a list of structures and their corresponding score on AIcrowd:
   \item \textbf{$84.3\%$}: model-4 TODO
 \end{itemize}
 \section{Logistic Regression and Support-Vector Machine}
-In this section we take a different approach compared to the last one about neural nets, which implies a different pipeline. First, we present the preprocessing steps we applied to clean, normalize and transforme the provided tweets datasets. Then, we compare them by training two models using support-vector machine and logistic regression classifier. Finally, we optimize the most accurate models.
+In this section we take a different approach compared to the one of neural nets. First, we present the preprocessing steps we applied to clean, normalize and transforme the provided tweets datasets. Then, we compare them by training two models using support-vector machine and logistic regression classifiers. Finally, we optimize the most accurate models.
 
 We used the following libraries and their dependencies.
 \begin{itemize}
@@ -84,7 +84,7 @@ We used the following libraries and their dependencies.
 \end{itemize}
 
 \subsection{Preprocessing}
-We applied three differents kinds of preprocessing steps.
+We applied three kinds of preprocessing steps.
 \begin{itemize}
 	\item Removing or replacing words and symbols.
 	\item Normalizing by modifying words or sentences.
@@ -93,29 +93,45 @@ We applied three differents kinds of preprocessing steps.
 
 \subsubsection{Tweet Cleaning}
 This is a basic operation. We get rid of \texttt{<User>}, \texttt{<url>} and \verb"\n" because these have already been processed and should not contain that much information. Notice that nice users bad users are all described by the same word. The same argument can be applied to URLs. We also use regular expression to remove all kinds of punctuation. Even if punctation is usually expressive, it may be inconsistent considering the variety of tweets.
+
 \subsubsection{Duplicates}
 We simply remove all the duplicates tweets in the cleaned datasets. The problem with duplicates is that they can artificially increase the accuracy if the sames tweets appear in the training as well as in the test dataset. Nevertheless, removing duplicates do not necessarly make sense as multiple user could have written the same tweet. We would neglect its importance.
+
 \subsubsection{Stemming}
-Stemming is a technique  that removes affixes so that similar words are effectively understood as similar when interpreted by the machine learning algorithm. Here are some examples.
-\begin{itemize}
-	\item cars - car
-	\item swimming - swimm
-	\item this - thi
-\end{itemize}
-This is often described as brute force as it is not smart but crude. It does not see the difference between a word in its plural form from a word whose last letter is an \textit{s}.
+Stemming is a technique that removes affixes so that similar words are effectively understood as similar when interpreted by the machine learning algorithm. Here are some examples : \textit{cars - car, swimming - swimm, this - thi}. This is often described as brute force as it is not smart but crude. For example, it does not see the difference between a word in its plural form from a word whose last letter is an \textit{s}.
+
 \subsubsection{Lemmatization}
 This technique is the smart version of stemming. It does a more advanced analysis of word to clearly identify the structure of each word and to cut it correctly.
+
 \subsubsection{Stop Words}
 Stop words are the most common words like \textit{I, it, is, of, in, \dots}. They should be equivalently be present in both positive and negative datasets but they do not have real impact in the meaning of the sentence. We went trough all the datasets to establish a list of the most used words, kept the ten most used and removed them in all the tweets of the training sets.
 
 \subsubsection{Vectorization}
+We use Scikit-learn to vectorize our data. We used multiple binary vectorization with \textit{n-grams} where \textit{n} corresponds to the number of words vectorized together. This helps considering the context in which words are used by increasing \textit{n}.
+
 \subsubsection{Term Frequency-Inverse Document Frequency}
+Instead of using \textit{0s} and \textit{1s} like binary vectorization, with \textit{TF-IDF} we count the occurences of the words.
 
 \subsection{Logistic Regression}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{../plots/logreg.png}
+\end{figure}
 
 \subsection{SVM}
+\begin{figure}[h]
+	\includegraphics[width=0.5\textwidth]{../plots/svm.png}
+\end{figure}
 
 \subsection{Optimization of SVM}
+\begin{figure}[h]
+	\includegraphics[width=0.5\textwidth]{../plots/improved_svm.png}
+\end{figure}
+\begin{figure}[h]
+	\includegraphics[width=0.5\textwidth]{../plots/final_svm.png}
+\end{figure}
+
+\clearpage
 
 \begin{thebibliography}{9}
 	\bibitem{sentianal}
