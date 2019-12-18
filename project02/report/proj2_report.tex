@@ -55,7 +55,7 @@ We try to train the NN on TPUs provided by Google Colab but as everything is in 
 
 The number of epochs can only be approximate due all the crashes encountered on Colab but lives around 150 per model.
 \section{Logistic Regression and Support-Vector Machine}
-In this section we take a different approach compared to the last one about neural nets. First, we present the preprocessing steps we applied to clean, normalize and transforme the provided tweets datasets. Then, we compare them by training two models using support-vector machine and logistic regression classifier. Finally, we optimize the most accurate models.
+In this section we take a different approach compared to the last one about neural nets, which implies a different pipeline. First, we present the preprocessing steps we applied to clean, normalize and transforme the provided tweets datasets. Then, we compare them by training two models using support-vector machine and logistic regression classifier. Finally, we optimize the most accurate models.
 
 \subsection{Preprocessing}
 We applied three differents kinds of preprocessing steps.
@@ -66,10 +66,18 @@ We applied three differents kinds of preprocessing steps.
 \end{itemize}
 
 \subsubsection{Tweet Cleaning}
-\subsubsection{Duplicate}
+This is a basic operation. We get rid of \texttt{<User>}, \texttt{<url>} and \verb"\n" because these have already been processed and should not contain that much information. Notice that nice users bad users are all described by the same word. The same argument can be applied to URLs. We also use regular expression to remove all kinds of punctuation. Even if punctation is usually expressive, it may be inconsistent considering the variety of tweets.
+\subsubsection{Duplicates}
+We simply remove all the duplicates tweets in the cleaned datasets. The problem with duplicates is that they can artificially increase the accuracy if the sames tweets appear in the training as well as in the test dataset. Nevertheless, removing duplicates do not necessarly make sense as multiple user could have written the same tweet. We would neglect its importance.
 \subsubsection{Stemming}
+Stemming is a technique  that removes affixes so that similar words are effectively understood as similar when interpreted by the machine learning algorithm. Here are some examples.
+\begin{itemize}
+	\item cars - car
+	\item swimming - swimm
+	\item this - thi
+\end{itemize}
+This is often described as brute force as it is not smart but crude. It does not see the difference between a word in its plural form from a word whose last letter is an \textit{s}.
 \subsubsection{Lemmatization}
-\subsubsection{Stop Words}
 \subsubsection{Stop Words}
 \subsubsection{Vectorization}
 \subsubsection{Term Frequency-Inverse Document Frequency}
