@@ -31,12 +31,7 @@
 \clearpage
 
 \section{Introduction}
-The goal of the project was to classify a set of tweets as positive or negative content. We try to use different methods to achieve this goal.
-
-\begin{itemize}
-  \item Neural Nets
-	\item Logistic Regression and Support-Vector Machine
-\end{itemize}
+In this project, we implement tweets classifiers using neural nets, logistic regression and support-vector machine to predict if their content is positive or negative.
 
 \section{Embedding and Neural Nets}
 The first part is to transform each tweets in a vector. We first try using an implementation of the 
@@ -77,6 +72,7 @@ In this section we take a different approach compared to the one of neural nets.
 
 We used the following libraries and their dependencies.
 \begin{itemize}
+	\setlength\itemsep{1px}
 	\item Python 3.8
 	\item Jupyter-Notebook
 	\item Natural Language Toolkit
@@ -86,6 +82,7 @@ We used the following libraries and their dependencies.
 \subsection{Preprocessing}
 We applied three kinds of preprocessing steps.
 \begin{itemize}
+	\setlength\itemsep{1px}
 	\item Removing or replacing words and symbols.
 	\item Normalizing by modifying words or sentences.
 	\item Transforming the tweets into usable data structures for machine learning.
@@ -112,21 +109,36 @@ We use Scikit-learn to vectorize our data. We used multiple binary vectorization
 \subsubsection{Term Frequency-Inverse Document Frequency}
 Instead of using \textit{0s} and \textit{1s} like binary vectorization, with \textit{TF-IDF} we count the occurences of the words.
 
-\subsection{Logistic Regression}
+\subsection{1-grams Logistic Regression and Support-Vector Machine}
+First, we select the most effective cleaning or normalizing method by assessing them with logistic regression and SVM on a 1-grams vectorization.
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.5\textwidth]{../plots/logreg.png}
 \end{figure}
 
-\subsection{SVM}
 \begin{figure}[h]
 	\includegraphics[width=0.5\textwidth]{../plots/svm.png}
 \end{figure}
 
+Overall, SVM performs better than logistic regression. Simple cleaning seems to be enough. Since tweets are short sentences, it is hard to normalize tweets without alterating them too much.
+
 \subsection{Optimization of SVM}
+Finally, we optimize the SVM model on cleaned data.
+
 \begin{figure}[h]
 	\includegraphics[width=0.5\textwidth]{../plots/improved_svm.png}
 \end{figure}
+
+By taking 3 and 4-grams vectorization, we are able to improve from 82\% to 86\% even if 4-grams seems to be the limit before sever overfitting. On the other hand, \textit{TF-IDF} performs similarly to 1-grams as tweets are short and words tend to appear only once in them.
+
+\section{Final Discussion}
+\begin{itemize}
+	\item Parler de la difficulté d'extraire de l'info des tweets car ils sont court
+	\item Parler que les limites de logreg et svm semblement atteintes
+	\item Parler grossièrement du temps de calcul
+	\item Parler de LSTM et RNN
+\end{itemize}
 
 \clearpage
 
