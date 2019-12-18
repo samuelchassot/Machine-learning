@@ -39,21 +39,39 @@ The goal of the project was to classify a set of tweets as positive or negative 
 \end{itemize}
 
 \section{Embedding and Neural Nets}
-The first part is to transform each tweets in a vector. We first try using an implementation of the GloVE algorithm of our own, the results are not very satisfiing (65\%-70\%). We then use an embedding created by the Stanford University which is also based on GloVE and that used a big Twitter dataset. We decide to use the 200 features version.
-We then compute the vector for each tweets as the numerical average of each vector corresponding to the words of which it is composed.
+The first part is to transform each tweets in a vector. We first try using an implementation of the 
+GloVE algorithm of our own, the results are not very satisfiing (65\%-70\%). We then use an embedding 
+created by the Stanford University which is also based on GloVE and that used a big Twitter dataset. 
+We decide to use the 200 features version.
+We then compute the vector for each tweets as the numerical average of each vector corresponding to the 
+words of which it is composed.
 
-We first try to clean dataset ourselves (see Preprocessing section) and then use another technique. 
+We first try to clean dataset ourselves and then use another technique. (see Preprocessing section) 
 
-To do the Neural Nets and the training, we use Tensorflow library from Google and run it on a Google Colab notebook to have access to the GPUs they offer.
+To do the Neural Nets and the training, we use Tensorflow library from Google and run it on a Google Colab notebook 
+to have access to the GPUs they offer.
 
-We try lots of NN configuration (at random but manually chosen). The one that give best results are the one with few hidden layers but lots of neuron per layer. We also add in some of them some Dropout layers with $p\in [0.05, 0.2]$ depending of the size of the layer before.
-the best achieve 84.3\% on Aiwrowd has one input layer of $200$, one hidden layer of $100,000$, one dropout layer with $p=0.15$ and an output layer of 2 nodes. All hidden layers use the ReLU function, we try others but that give poor results. The output layer uses softmax activation function.
+We try lots of NN configuration (at random but manually chosen). The one that give best results are the one with 
+few hidden layers but lots of neuron per layer. We also add in some of them some Dropout layers with $p\in [0.05, 0.2]$ 
+depending of the size of the layer before.
+the best achieve 84.3\% on Aiwrowd has one input layer of $200$, one hidden layer of $100,000$, one dropout 
+layer with $p=0.15$ and an output layer of 2 nodes. All hidden layers use the ReLU function, we try others 
+but that give poor results. The output layer uses softmax activation function.
 
 We use standard accuracy as loss function. The optimizer used is first 'Adam' which we replace by SGD for better results.
 
 We try to train the NN on TPUs provided by Google Colab but as everything is in beta, we cannot make it work.
 
 The number of epochs can only be approximate due all the crashes encountered on Colab but lives around 150 per model.
+
+Considering the difficulties encountered during training process (due mainly to the computational cost), we try lots of NN 
+structures and keep only interesting ones (that beat previous best score on AIcrowd). 
+Here a list of structures and their corresponding score on AIcrowd:
+\begin{itemize}
+  \item \textbf{$81.8\%$}: $200->25000->1000->500->2$ ReLU for all layers except last for which Softmax.
+  \item \textbf{$84.2\%$}: model-1 TODO
+  \item \textbf{$84.3\%$}: model-4 TODO
+\end{itemize}
 \section{Logistic Regression and Support-Vector Machine}
 In this section we take a different approach compared to the last one about neural nets, which implies a different pipeline. First, we present the preprocessing steps we applied to clean, normalize and transforme the provided tweets datasets. Then, we compare them by training two models using support-vector machine and logistic regression classifier. Finally, we optimize the most accurate models.
 
