@@ -1,0 +1,47 @@
+\documentclass[11pt, a4paper, twocolumn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+ \geometry{
+ left=20mm,
+ right=20mm,
+ top=20mm,
+ bottom=20mm
+ }
+
+\graphicspath{ {./plots/} }
+
+\begin{document}
+\date{2019 October}
+\title{CS-443 Machine Learning Project 1: J-D-S Team}
+\author{
+  Julie Camille Rosalie Giunta\\
+  \texttt{274957}
+  \and
+  Samuel Chassot\\
+  \texttt{270955}
+  \and
+  Daniel Filipe Nunes Silva\\
+  \texttt{275197}
+}
+
+\maketitle
+\clearpage
+
+\section{Introduction}
+The goal of the project was to classify a set of tweets as positive or negative content. We try to use different methods to achieve this goal:
+
+\begin{itemize}
+  \item SVM
+  \item SGD
+  \item Neural Nets
+\end{itemize}
+
+\section{Embedding and Neural Nets}
+The first part is to transform each tweets in a vector. We first try using an implementation of the GloVE algorithm of our own, the results are not very satisfiing (65\%-70\%). We then use an embedding created by the Stanford University which is also based on GloVE and that used a big Twitter dataset. We decide to use the 200 features version.
+
+
+\end{document}
+
