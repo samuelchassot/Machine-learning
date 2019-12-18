@@ -57,6 +57,14 @@ The number of epochs can only be approximate due all the crashes encountered on 
 \section{Logistic Regression and Support-Vector Machine}
 In this section we take a different approach compared to the last one about neural nets, which implies a different pipeline. First, we present the preprocessing steps we applied to clean, normalize and transforme the provided tweets datasets. Then, we compare them by training two models using support-vector machine and logistic regression classifier. Finally, we optimize the most accurate models.
 
+We used the following libraries and their dependencies.
+\begin{itemize}
+	\item Python 3.8
+	\item Jupyter-Notebook
+	\item Natural Language Toolkit
+	\item Scikit-learn
+\end{itemize}
+
 \subsection{Preprocessing}
 We applied three differents kinds of preprocessing steps.
 \begin{itemize}
@@ -80,6 +88,7 @@ This is often described as brute force as it is not smart but crude. It does not
 \subsubsection{Lemmatization}
 This technique is the smart version of stemming. It does a more advanced analysis of word to clearly identify the structure of each word and to cut it correctly.
 \subsubsection{Stop Words}
+Stop words are the most common words like \textit{I, it, is, of, in, \dots}. They should be equivalently be present in both positive and negative datasets but they do not have real impact in the meaning of the sentence. We went trough all the datasets to establish a list of the most used words, kept the ten most used and removed them in all the tweets of the training sets.
 
 \subsubsection{Vectorization}
 \subsubsection{Term Frequency-Inverse Document Frequency}
