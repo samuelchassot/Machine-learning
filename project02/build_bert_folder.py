@@ -18,8 +18,6 @@ def main():
 	tweets_pos = tweets_txt("Datasets/twitter-datasets/train_pos.txt")
 	tweets_neg = tweets_txt("Datasets/twitter-datasets/train_neg.txt")
 
-	np.random.seed(42)
-
 	tweets_pos_train, tweets_pos_test = divide_test_train(tweets_pos)
 	tweets_neg_train, tweets_neg_test = divide_test_train(tweets_neg)
 
