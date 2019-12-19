@@ -59,7 +59,7 @@ We use standard accuracy as loss function. The optimizer used is first 'Adam' wh
 
 We try to train the NN on TPUs provided by Google Colab but as everything is in beta, we cannot make it work.
 
-The number of epochs can only be approximate due to all the crashes encountered on Colab but lives around 150 per model.
+The number of epochs can only be approximate due to all the crashes encountered on Colab but lives around 250 per model. At some point, model begins to overfit and score goes down (for the third model above this point was around 300 epochs).
 
 Considering the difficulties encountered during training process due mainly to the computational cost, we try multiple NN 
 structures and keep the ones providing the best scores on aicrowd. 
@@ -69,7 +69,7 @@ Here is a list of structures and their corresponding score on aicrowd. Only the 
   \item \textbf{$84.2\%$}: $\rightarrow 1000\rightarrow \text{Drop}\rightarrow 1000
   \rightarrow \text{Drop}\rightarrow 1000\rightarrow \text{Drop}\rightarrow 1000
   \rightarrow \text{Drop}\rightarrow 1000\rightarrow \text{Drop}\rightarrow $ where Drop is a dropout layer with $p=0.1$.
-  \item \textbf{$84.3\%$}: $\rightarrow 100000\rightarrow \text{Drop}\rightarrow $ where Drop is a dropout layer with $p=0.15$
+  \item \textbf{$84.3\%$}: $\rightarrow 100000\rightarrow \text{Drop}\rightarrow $ where Drop is a dropout layer with $p=0.15$. 
 \end{itemize}
 
 \subsection{Convolutional Neural Networks}
