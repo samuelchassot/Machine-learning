@@ -47,13 +47,13 @@ provided by the Stanford University which is also based on GloVE algorithm but o
 Then, we compute the vector for each tweet as the numerical average of each vector corresponding to the 
 words of which it is composed.
 
-To do the neural nets and the training, we use the Tensorflow library from Google and run it on a Google Colab to benefit from their GPUs.
+To do the neural nets and the training, we use the Tensorflow library from Google and run it on Google Colab to benefit from their GPUs.
 
 The NN configurations that give the best results are the one with 
 fewer hidden layers but lots of neurons per layer. We also add in some of them dropout layers with $p\in [0.05, 0.2]$ 
 depending of the size of the layer before.
 The best achieves 84.3\% on aicrowd with one input layer of $200$, one hidden layer of $100,000$, one dropout 
-layer with $p=0.15$ and an output layer of 2 nodes. All hidden layers use the ReLU function, others give poor results. The output layer uses softmax activation function.
+layer with $p=0.15$ and an output layer of 2 nodes. All hidden layers use the ReLU function, other activation functions give poorer results. The output layer uses softmax activation function.
 
 We use standard accuracy as loss function. The optimizer used is first 'Adam' which we replace by SGD for better results.
 
