@@ -38,41 +38,38 @@ In this project, we implement tweets classifiers using neural nets, BERT, logist
 \section{Neural Networks}
 
 \subsection{Preprocessing}
-To clean our data, we follow an algorithm similar to Kim Yoon's paper\cite{kimyoonpaper} and code\cite{kimyooncode}. We remove duplicates on the training set and separate known contractions. For example, "can'nt" becomes "can 'nt".
+To clean our data, we follow an algorithm similar to Kim Yoon's paper\cite{kimyoonpaper} and code\cite{kimyooncode}. We remove duplicates on the training set and separate known contractions: for example, "can'nt" becomes "can 'nt".
 
 \subsection{Embedding and Neural Nets}
-The first part is to transform each tweets in a vector. We first try using an implementation of the 
-GloVE algorithm of our own, the results are not very satisfiing (65\%-70\%). We then use an embedding 
-created by the Stanford University which is also based on GloVE and that used a big Twitter dataset\cite{glovepaper, gloveembedding}. 
-We decide to use the 200 features version.
-We then compute the vector for each tweets as the numerical average of each vector corresponding to the 
+First, each tweet is transformed into a vector. We implement
+GloVE algorithm, the results are not satisfiing (65\%-70\%). We then use an embedding with 200 features
+provided by the Stanford University which is also based on GloVE algorithm but on a larger Twitter dataset\cite{glovepaper, gloveembedding}. 
+Then, we compute the vector for each tweet as the numerical average of each vector corresponding to the 
 words of which it is composed.
 
-To do the Neural Nets and the training, we use Tensorflow library from Google and run it on a Google Colab notebook 
-to have access to the GPUs they offer.
+To do the neural nets and the training, we use the Tensorflow library from Google and run it on Google Colab to benefit from their GPUs.
 
-We try lots of NN configuration (at random but manually chosen). The one that give best results are the one with 
-few hidden layers but lots of neuron per layer. We also add in some of them some Dropout layers with $p\in [0.05, 0.2]$ 
+The NN configurations that give the best results are the one with 
+fewer hidden layers but lots of neurons per layer. We also add in some of them dropout layers with $p\in [0.05, 0.2]$ 
 depending of the size of the layer before.
-the best achieve 84.3\% on AIcrowd has one input layer of $200$, one hidden layer of $100,000$, one dropout 
-layer with $p=0.15$ and an output layer of 2 nodes. All hidden layers use the ReLU function, we try others 
-but that give poor results. The output layer uses softmax activation function.
+The best achieves 84.3\% on aicrowd with one input layer of $200$, one hidden layer of $100,000$, one dropout 
+layer with $p=0.15$ and an output layer of 2 nodes. All hidden layers use the ReLU function, other activation functions give poorer results. The output layer uses softmax activation function.
 
 We use standard accuracy as loss function. The optimizer used is first 'Adam' which we replace by SGD for better results.
 
 We try to train the NN on TPUs provided by Google Colab but as everything is in beta, we cannot make it work.
 
-The number of epochs can only be approximate due all the crashes encountered on Colab but lives around 150 per model.
+The number of epochs can only be approximate due to all the crashes encountered on Colab but lives around 150 per model.
 
-Considering the difficulties encountered during training process (due mainly to the computational cost), we try lots of NN 
-structures and keep only interesting ones (that beat previous best score on AIcrowd). 
-Here a list of structures and their corresponding score on AIcrowd. Only the hidden layers are shown.
+Considering the difficulties encountered during training process due mainly to the computational cost, we try multiple NN 
+structures and keep the ones providing the best scores on aicrowd. 
+Here is a list of structures and their corresponding score on aicrowd. Only the hidden layers are shown.
 \begin{itemize}
   \item \textbf{$81.8\%$}: $\rightarrow 25000\rightarrow 1000\rightarrow 500\rightarrow $
   \item \textbf{$84.2\%$}: $\rightarrow 1000\rightarrow \text{Drop}\rightarrow 1000
   \rightarrow \text{Drop}\rightarrow 1000\rightarrow \text{Drop}\rightarrow 1000
-  \rightarrow \text{Drop}\rightarrow 1000\rightarrow \text{Drop}\rightarrow $ where Drop is a Dropout layer with $p=0.1$.
-  \item \textbf{$84.3\%$}: $\rightarrow 100000\rightarrow \text{Drop}\rightarrow $ where Drop is a Dropout layer with $p=0.15$
+  \rightarrow \text{Drop}\rightarrow 1000\rightarrow \text{Drop}\rightarrow $ where Drop is a dropout layer with $p=0.1$.
+  \item \textbf{$84.3\%$}: $\rightarrow 100000\rightarrow \text{Drop}\rightarrow $ where Drop is a dropout layer with $p=0.15$
 \end{itemize}
 
 \subsection{Convolutional Neural Networks}
@@ -160,6 +157,21 @@ By taking 3 and 4-grams vectorization, we are able to improve from 82\% to 86\% 
 	\item Parler grossièrement du temps de calcul
 	\item Parler de LSTM et RNN
 \end{itemize}
+It is difficult to extract meaningful information 
+from the tweets mainly due to their small size. They are really small pieces of text and users often write concisely and not always in proper english. This 
+leads our algorithm into troubles.
+To face this difficulty, we need to have enough data so the dataset needs to be big enough and that makes the computation 
+time really big.
+
+The Neural Networks are very powerful tools but the computational power required to train them 
+is enormous. This makes them painful to use with our big dataset. 
+
+Given our results, it seems that the Logistic Regression and the Support Vector Machine give their best here. We think that we go to the limits of these 
+techniques and that we could not have done better with them. 
+
+We find other techniques that could have been promissing like the Recurrent Neural Networks and more precisely the Long-Short Term Memory. These technics 
+are very well suited to the text analysis due to their capabilities to "remember" the beginning of the sentence while going through it. As the human 
+language is based on aligning words together to make sense, it seems to be a good idea. We do not have time to cover them here.
 
 \clearpage
 \onecolumn
