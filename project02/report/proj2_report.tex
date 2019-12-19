@@ -36,6 +36,7 @@ In this project, we implement tweets classifiers using neural nets, BERT, logist
 \section{Neural Networks}
 
 \subsection{Preprocessing}
+To clean our data, we follow a algorithm similar to Kim Yoon's paper\cite{kimyoonpaper} and code\cite{kimyooncode}. We remove duplicates on the training set and separate known contractions. For example, "can'nt" becomes "can 'nt".
 
 \subsection{Embedding and Neural Nets}
 The first part is to transform each tweets in a vector. We first try using an implementation of the 
@@ -53,7 +54,7 @@ to have access to the GPUs they offer.
 We try lots of NN configuration (at random but manually chosen). The one that give best results are the one with 
 few hidden layers but lots of neuron per layer. We also add in some of them some Dropout layers with $p\in [0.05, 0.2]$ 
 depending of the size of the layer before.
-the best achieve 84.3\% on Aiwrowd has one input layer of $200$, one hidden layer of $100,000$, one dropout 
+the best achieve 84.3\% on AIcrowd has one input layer of $200$, one hidden layer of $100,000$, one dropout 
 layer with $p=0.15$ and an output layer of 2 nodes. All hidden layers use the ReLU function, we try others 
 but that give poor results. The output layer uses softmax activation function.
 
@@ -152,6 +153,11 @@ By taking 3 and 4-grams vectorization, we are able to improve from 82\% to 86\% 
 \clearpage
 
 \begin{thebibliography}{9}
+	\bibitem{kimyoonpaper}
+		KIM, Yoon. Convolutional neural networks for sentence classification. arXiv preprint arXiv:1408.5882, 2014.
+	\bibitem{kimyooncode}
+		CNNs for sentence classification
+		\\\texttt{https://github.com/yoonkim/CNN_sentence}
 	\bibitem{sentianal}
 		Sentiment Analysis with Python
 		\\\texttt{https://towardsdatascience.com/sentiment-analysis-with-python-part-1-5ce197074184}
