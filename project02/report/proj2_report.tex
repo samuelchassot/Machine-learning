@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{listings}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
 \usepackage{amsmath,amsfonts,amssymb}
 \usepackage{geometry}
  \geometry{
@@ -74,12 +75,15 @@ Here a list of structures and their corresponding score on AIcrowd. Only the hid
 \end{itemize}
 
 \subsection{Convolutional Neural Networks}
-We also use Stanford University GloVE's embedding\cite{glovepaper, gloveembedding}. To reduce the computational complexity, we reduce the embedding matrix to the most used word vectors and the tweets to contain only words that are in the embedding matrix.
+We also use Stanford University GloVE's embedding\cite{glovepaper, gloveembedding}. To reduce the computational complexity, we reduce the embedding matrix to the most used word vectors and the tweets to contain only words that are in the embedding matrix. We detect that the maximum number of useful tokens in our data set is 199\label{199}.
 
 We compare 3 methods:
 
 
 \section{BERT}
+BERT (Bidirectional Encoder Representations from Transformers)\cite{bertpaper} is a training process made by researchers at Google, that, instead of reading a sentence in a certain order, uses the entire sequence simultaneously.
+
+We use ktrain library\cite{ktrain} and inspire ourself from its tutorial on text classification to try BERT on our data. We remove duplicates from our training set and then split it in $75\%$ for training and $25\%$ for validating. To reduce the computational complexity and the use of RAM, we fix the length maximal of 
 
 \section{Logistic Regression and Support-Vector Machine}
 In this section we take a different approach compared to the one of neural nets. First, we present the preprocessing steps we applied to clean, normalize and transforme the provided tweets datasets. Then, we compare them by training two models using support-vector machine and logistic regression classifiers. Finally, we optimize the most accurate models.
@@ -155,30 +159,34 @@ By taking 3 and 4-grams vectorization, we are able to improve from 82\% to 86\% 
 \end{itemize}
 
 \clearpage
+\onecolumn
 
 \begin{thebibliography}{9}
 	\bibitem{kimyoonpaper}
 		KIM, Yoon. Convolutional neural networks for sentence classification. arXiv preprint arXiv:1408.5882, 2014.
 	\bibitem{kimyooncode}
 		CNNs for sentence classification
-		\\\texttt{https://github.com/yoonkim/CNN\_sentence}
+		\\\url{https://github.com/yoonkim/CNN\_sentence}
 	\bibitem{glovepaper}
 		PENNINGTON, Jeffrey, SOCHER, Richard, et MANNING, Christopher. Glove: Global vectors for word representation. In : Proceedings of the 2014 conference on empirical methods in natural language processing (EMNLP). 2014. p. 1532-1543.
 	\bibitem{gloveembedding}
 		GloVE Twitter pre-trained word vectors
-		\\\texttt{https://nlp.stanford.edu/projects/glove}
+		\\\url{https://nlp.stanford.edu/projects/glove}
 	\bibitem{bertpaper}
 		DEVLIN, Jacob, CHANG, Ming-Wei, LEE, Kenton, et al. Bert: Pre-training of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805, 2018.
 	\bibitem{bertcode}
 		BERT Text Classification in 3 Lines of Code Using Keras
-		\\\texttt{https://towardsdatascience.com/bert-text-classification-in-3-lines-of-code-using-keras-264db7e7a358}
+		\\\url{https://towardsdatascience.com/bert-text-classification-in-3-lines-of-code-using-keras-264db7e7a358}
+	\bibitem{ktrain}
+		Ktrain library
+		\\\url{https://github.com/amaiya/ktrain}
 	\bibitem{sentianal}
 		Sentiment Analysis with Python
-		\\\texttt{https://towardsdatascience.com/sentiment-analysis-with-python-part-1-5ce197074184}
-		\\\texttt{https://towardsdatascience.com/sentiment-analysis-with-python-part-2-4f71e7bde59a}
+		\\\url{https://towardsdatascience.com/sentiment-analysis-with-python-part-1-5ce197074184}
+		\\\url{https://towardsdatascience.com/sentiment-analysis-with-python-part-2-4f71e7bde59a}
 	\bibitem{stemlema}	
 		Stemming and Lemmatization
-		\\\texttt{https://nlp.stanford.edu/IR-book/html/htmledition/stemming-and-lemmatization-1.html}
+		\\\url{https://nlp.stanford.edu/IR-book/html/htmledition/stemming-and-lemmatization-1.html}
 
 \end{thebibliography}
 
