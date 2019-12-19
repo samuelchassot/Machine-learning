@@ -147,7 +147,7 @@ We used the following libraries to compare three CNN models and their variations
 	\item Keras
 \end{itemize}
 
-We use the same embedding matrix as for NN\cite{glovepaper, gloveembedding}. To reduce the computational complexity, we cut the embedding matrix to the most used word vectors and tweets. We detect that the maximum number of useful tokens in our data set is 199\label{199}.
+We use the same embedding matrix as for NN\cite{glovepaper, gloveembedding}. To reduce the computational complexity, we cut the embedding matrix to the most used word vectors. For the tweets, we reduce them to known words to the matrix. We detect that the maximum number of useful tokens in our data set is 199\label{199}.
 
 We split our datasets into $75\%$ training and $25\%$ validation. Then, we tokenize with Keras and pad the result so that each array has the same length.
 
