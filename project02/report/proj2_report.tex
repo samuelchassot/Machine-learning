@@ -172,8 +172,8 @@ By taking 3 and 4-grams vectorization, we are able to improve from 82\% to 86\% 
 
 \section{Final Discussion}
 It is difficult to extract meaningful information 
-from the tweets mainly due to their small size. They are really small pieces of text and users often write concisely and not always in proper english. There are lots of different spelling (some more or less exotic) for a same word 
-and so our algorithm can not interpret them as one.
+from the tweets mainly due to their small size. They are really small pieces of text and users often write concisely and not always in proper english. There are lots of different spellings (some more or less exotic) for a same word 
+and our algorithm cannot interpret them as one.
 To face this difficulty, the dataset needs to be big enough and that makes the computation 
 time really high.
 
@@ -183,11 +183,11 @@ is enormous. This makes them painful to use with our big dataset specially on Go
 Given our results, it seems that the Logistic Regression and the Support Vector Machine give their best here. We think that we go to the limits of these 
 techniques and that we could not have done better. 
 
-The new technics like BERT are very performant but requires lots of time and memory. They give better results than old techniques cited above but the latter give relatively close 
-performance in a smaller amount of time and with less resources. Their computation over accuracy ratio is way better. So they are not become obsolete in our opinion.
+The new techniques like BERT are very performant but requires lots of time and memory. They give better results than old techniques cited above but the latter give relatively close 
+performance in a smaller amount of time and with less resources. Their computation over accuracy ratio is way better. So they do not become obsolete in our opinion.
 
-We are aware of other techniques that are promissing like the Recurrent Neural Networks and more precisely the Long-Short Term Memory. These technics 
-are very well suited to the text analysis due to their capabilities to "remember" previous words (vectors) as as computing on a given one. As the human 
+We are aware of other techniques that are promising like the Recurrent Neural Networks and more precisely the Long-Short Term Memory. These techniques 
+are very well suited to text analysis due to their capabilities to "remember" previous words (vectors) while they process another one. As the human 
 language is based on aligning words together to make sense, it seems natural to process words considering the ones around and not independently. 
 We do not have time to cover them here.
 
