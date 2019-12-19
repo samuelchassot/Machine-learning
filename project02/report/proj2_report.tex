@@ -36,7 +36,7 @@
 In this project, we implement tweets classifiers using logistic regression, support-vector machine, neural nets and BERT to predict if their content is positive or negative.
 
 \section{Logistic Regression and Support-Vector Machine}
-In this section we take a different approach compared to the one of neural nets. First, we present the preprocessing steps we applied to clean, normalize and transform the provided tweets datasets. Then, we compare them by training two models using support-vector machine and logistic regression classifiers. Finally, we optimize the most accurate models.
+In this section, we assess basic machine learning techniques. First, we present the preprocessing steps we applied to clean, normalize and transform the provided tweets datasets. Then, we compare them by training two models using support-vector machine and logistic regression classifiers. Finally, we optimize the most accurate models.
 
 We used the following libraries and their dependencies.
 \begin{itemize}
@@ -103,11 +103,11 @@ By taking 3 and 4-grams vectorization, we are able to improve from 82\% to 86\% 
 \section{Neural Networks}
 
 \subsection{Preprocessing}
-To clean our data, we follow an algorithm similar to Kim Yoon's paper\cite{kimyoonpaper} and code\cite{kimyooncode}. We remove duplicates on the training set and separate known contractions: for example, "don't" becomes "do n't".
+To clean our data, we use an algorithm similar to the one in Kim Yoon's paper\cite{kimyoonpaper} and code\cite{kimyooncode}. We remove duplicates on the training set and separate known contractions: for example, "don't" becomes "do n't".
 
 \subsection{Embedding and Neural Nets}
 First, each tweet is transformed into a vector. We implement
-GloVE algorithm, the results are not satisfiing (65\%-70\%). We then use an embedding with 200 features
+GloVE algorithm, the results are not satisfiing (65\%-70\% accuracy). Therefore, we use an embedding with 200 features
 provided by the Stanford University which is also based on GloVE algorithm but on a larger Twitter dataset\cite{glovepaper, gloveembedding}. 
 Then, we compute the vector for each tweet as the numerical average of each vector corresponding to the 
 words of which it is composed.
@@ -122,23 +122,22 @@ layer with $p=0.15$ and an output layer of 2 nodes. All hidden layers use the Re
 
 We use standard accuracy as loss function. The optimizer used is first 'Adam' which we replace by SGD for better results.
 
-We try to train the NN on TPUs provided by Google Colab but as everything is in beta, we cannot make it work.
+We try to train the NN on TPUs provided by Google Colab but as everything is in beta, it does work as expected.
 
-The number of epochs can only be approximate due to all the crashes encountered on Colab but lives around 200 to 250 per model. At some point, model begins to overfit and score goes down (for the third model above this point was around 300 epochs).
+The number of epochs can only be approximate due to all the crashes encountered on Colab but lives around 200 to 250 per model. Around 300 epochs, model starts to overfit and score goes down.
 
-Considering the difficulties encountered during training process due mainly to the computational cost, we try multiple NN 
-structures and keep the ones providing the best scores on aicrowd. 
+Considering the difficulties encountered during training process due mainly to the computational cost, we keep the ones providing the best scores on aicrowd among all our tries. 
 Here is a list of structures and their corresponding score on aicrowd. Only the hidden layers are shown.
 \begin{itemize}
-  \item \textbf{$81.8\%$}: $\rightarrow 25000\rightarrow 1000\rightarrow 500\rightarrow $
-  \item \textbf{$84.2\%$}: $\rightarrow 1000\rightarrow \text{Drop}\rightarrow 1000
+  \item \textbf{$81.8\%$}: $\dots \rightarrow 25000\rightarrow 1000\rightarrow 500\rightarrow \dots$
+  \item \textbf{$84.2\%$}: $\dots \rightarrow 1000\rightarrow \text{Drop}\rightarrow 1000
   \rightarrow \text{Drop}\rightarrow 1000\rightarrow \text{Drop}\rightarrow 1000
-  \rightarrow \text{Drop}\rightarrow 1000\rightarrow \text{Drop}\rightarrow $ where Drop is a dropout layer with $p=0.1$.
-  \item \textbf{$84.3\%$}: $\rightarrow 100000\rightarrow \text{Drop}\rightarrow $ where Drop is a dropout layer with $p=0.15$. 
+  \rightarrow \text{Drop}\rightarrow 1000\rightarrow \text{Drop}\rightarrow \dots$ where Drop is a dropout layer with $p=0.1$.
+  \item \textbf{$84.3\%$}: $\dots \rightarrow 100000\rightarrow \text{Drop}\rightarrow \dots$ where Drop is a dropout layer with $p=0.15$. 
 \end{itemize}
 
 \subsection{Convolutional Neural Networks}
-We used the following libraries to compare 3 CNN models and their variation.
+We used the following libraries to compare three CNN models and their variations.
 \begin{itemize}
 	\setlength\itemsep{1px}
 	\item Python 3.8
@@ -147,19 +146,19 @@ We used the following libraries to compare 3 CNN models and their variation.
 	\item Tensorflow.Keras
 \end{itemize}
 
-We use the same embedding matrix as for NN\cite{glovepaper, gloveembedding}. To reduce the computational complexity, we cut the embedding matrix to the most used word vectors and the tweets. We detect that the maximum number of useful tokens in our data set is 199\label{199}.
+We use the same embedding matrix as for NN\cite{glovepaper, gloveembedding}. To reduce the computational complexity, we cut the embedding matrix to the most used word vectors and tweets. We detect that the maximum number of useful tokens in our data set is 199\label{199}.
 
 We split our datasets into $75\%$ training and $25\%$ validation. Then, we tokenize with Keras and pad the result so that each array has the same length.
 
 \subsubsection{Method 1}
-We use a model a similar to article\cite{cnn1}, except that we use our reduced version of Stanford's embedding and add a dropout layer of 0.2 before the last dense layer to counter overfitting.
+We use a model similar to article\cite{cnn1} with our reduced version of Stanford's embedding and add a dropout layer of 0.2 before the last dense layer to counter overfitting.
 
 \subsubsection{Method 2}
 We use the same model as a simplified version\cite{cnn2} of Kim Yoon's paper\cite{kimyoonpaper} with our own embedding.
 
 \subsubsection{Method 3}
-We use the same model as proposed in Keras' blog\cite{cnn3} with our own embedding, the sigmoid function for the last activation function, adam as optimizer and binary crossentropy for the loss.
-Since that method works well, we try some variation: add 1 to 3 dropout layers, more units (200 or 1000 instead of 128) in the first Dense layer and bigger output dimensions (256 or 512 instead of 128) for the first Conv1D layer. 
+We use the same model as proposed in Keras' blog\cite{cnn3} with our own embedding, sigmoid functions for the last layer, adam as optimizer and binary crossentropy for loss.
+Since that method works well, we try some variation: add 1 to 3 dropout layers, more units (200 or 1000 instead of 128) in the first dense layer and bigger output dimensions (256 or 512 instead of 128) for the first Conv1D layer. 
 
 \begin{figure}[h]
 	\centering
