@@ -51,7 +51,7 @@ To do the neural nets and the training, we use the Tensorflow library from Googl
 
 The NN configurations that give the best results are the one with 
 fewer hidden layers but lots of neurons per layer. We also add in some of them dropout layers with $p\in [0.05, 0.2]$ 
-depending of the size of the layer before.
+depending of the size of the layer before\cite{dropoutkeras}.
 The best achieves 84.3\% on aicrowd with one input layer of $200$, one hidden layer of $100,000$, one dropout 
 layer with $p=0.15$ and an output layer of 2 nodes. All hidden layers use the ReLU function, other activation functions give poorer results. The output layer uses softmax activation function.
 
@@ -228,7 +228,9 @@ We do not have time to cover them here.
 	\bibitem{stemlema}	
 		Stemming and Lemmatization
 		\\\url{https://nlp.stanford.edu/IR-book/html/htmledition/stemming-and-lemmatization-1.html}
-
+	\bibitem{dropoutkeras}
+	Dropout in (Deep) Machine learning
+	\\\url{https://medium.com/@amarbudhiraja/https-medium-com-amarbudhiraja-learning-less-to-learn-better-dropout-in-deep-machine-learning-74334da4bfc5}
 \end{thebibliography}
 
 \end{document}
