@@ -60,7 +60,7 @@ We applied three kinds of preprocessing steps.
 This is a basic operation. We get rid of \texttt{<User>}, \texttt{<url>} and \verb"\n" because these have already been processed and should not contain that much information. Notice that nice users and bad users are all described by the same word. The same argument can be applied to URLs. We also use regular expression to remove all kinds of punctuation. Even if punctation is usually expressive, it may be inconsistent considering the variety of tweets.
 
 \subsubsection{Duplicates}
-We simply remove all the duplicates tweets in the cleaned datasets. The problem with duplicates is that they can artificially increase the accuracy if the sames tweets appear in the training as well as in the test dataset. Nevertheless, removing duplicates do not necessarly make sense as multiple user could have written the same tweet. We would neglect its importance.
+We simply remove all the duplicates tweets in the cleaned datasets. The problem with duplicates is that they can artificially increase the accuracy if the sames tweets appear in the training as well as in the test dataset. Nevertheless, removing duplicates do not necessarly make sense as multiple user could have written the same tweet. So we try both removing and keeping them.
 
 \subsubsection{Stemming}
 Stemming is a technique that removes affixes so that similar words are effectively understood as similar when interpreted by the machine learning algorithm. Here are some examples : \textit{cars - car, swimming - swimm, this - thi}. This is often described as brute force as it is not smart but crude. For example, it does not see the difference between a word in its plural form from a word whose last letter is an \textit{s}.
@@ -98,10 +98,19 @@ Finally, we optimize the SVM model on cleaned data.
 	\includegraphics[width=0.5\textwidth]{../plots/improved_svm.png}
 \end{figure}
 
-By taking 3 and 4-grams vectorization, we are able to improve from 82\% to 86\% even if 4-grams seems to be the limit before sever overfitting. Nevertheless, this score is confirmed on aicrowd. On the other hand, \textit{TF-IDF} performs similarly to 1-grams as tweets are short and words tend to appear only once in them.
+By taking 3 and 4-grams vectorization, we are able to improve from 82\% to 86\% even if 4-grams seems to be the limit before sever overfitting. Nevertheless, this score is confirmed on aicrowd. On the other hand, \textit{TF-IDF} performs similarly to 1-grams as tweets are short and words tend to appear only once in each of them.
 
 \section{Neural Networks}
-
+We use the following libraries:
+\begin{itemize}
+	\setlength\itemsep{1px}
+	\item Python 3.8
+	\item Google Colab
+	\item Scikit-learn
+	\item Tensorflow
+	\item Keras
+	\item Numpy
+\end{itemize}
 \subsection{Preprocessing}
 To clean our data, we use an algorithm similar to the one in Kim Yoon's paper\cite{kimyoonpaper} and code\cite{kimyooncode}. We remove duplicates on the training set and separate known contractions: for example, "don't" becomes "do n't".
 
@@ -112,7 +121,7 @@ provided by the Stanford University which is also based on GloVE algorithm but o
 Then, we compute the vector for each tweet as the numerical average of each vector corresponding to the 
 words of which it is composed.
 
-To do the neural nets and the training, we use the Tensorflow library from Google and run it on Google Colab to benefit from their GPUs.
+To do the neural nets and the training, we run our code on Google Colab to benefit from their GPUs.
 
 The NN configurations that give the best results are the one with 
 fewer hidden layers but lots of neurons per layer. We also add in some of them dropout layers with $p\in [0.05, 0.2]$ 
@@ -122,9 +131,9 @@ layer with $p=0.15$ and an output layer of 2 nodes. All hidden layers use the Re
 
 We use standard accuracy as loss function. The optimizer used is first 'Adam' which we replace by SGD for better results.
 
-We try to train the NN on TPUs provided by Google Colab but as everything is in beta, it does work as expected.
+We try to train the NN on TPUs provided by Google Colab but as everything is in beta, it does not work for our project.
 
-The number of epochs can only be approximate due to all the crashes encountered on Colab but lives around 200 to 250 per model. Around 300 epochs, model starts to overfit and score goes down.
+The number of epochs can only be approximated due to all the crashes encountered on Colab but lives around 200 to 250 per model. Around 300 epochs, model starts to overfit and score goes down.
 
 Considering the difficulties encountered during training process due mainly to the computational cost, we keep the ones providing the best scores on aicrowd among all our tries. 
 Here is a list of structures and their corresponding score on aicrowd. Only the hidden layers are shown.
@@ -137,16 +146,9 @@ Here is a list of structures and their corresponding score on aicrowd. Only the 
 \end{itemize}
 
 \subsection{Convolutional Neural Networks}
-We used the following libraries to compare three CNN models and their variations.
-\begin{itemize}
-	\setlength\itemsep{1px}
-	\item Python 3.8
-	\item Google Colab
-	\item Scikit-learn
-	\item Tensorflow.Keras
-\end{itemize}
+We compare three CNN models and their variations.
 
-We use the same embedding matrix as for NN\cite{glovepaper, gloveembedding}. To reduce the computational complexity, we cut the embedding matrix to the most used word vectors and tweets. We detect that the maximum number of useful tokens in our data set is 199\label{199}.
+We use the same embedding matrix as for NN\cite{glovepaper, gloveembedding}. To reduce the computational complexity, we cut the embedding matrix to the most used word vectors. For the tweets, we reduce them to known words to the matrix. We detect that the maximum number of useful tokens in our data set is 199\label{199}.
 
 We split our datasets into $75\%$ training and $25\%$ validation. Then, we tokenize with Keras and pad the result so that each array has the same length.
 
@@ -165,24 +167,24 @@ Since that method works well, we try some variation: add 1 to 3 dropout layers, 
 	\includegraphics[width=0.5\textwidth]{../plots/cnn.png}
 \end{figure}
 
-Overall, the best CNN method is the third one. In CNN figure, the accuracy is computed only for 3 epochs since after the third epoch, every model is overfitting, irrespective of any added dropout.
+Overall, the best CNN method is the third one. It obtains a score of $84.9\%$. In CNN figure, the accuracy is computed only for 3 epochs since after the third epoch, every model is overfitting, irrespective of any added dropout.
 
 \section{BERT}
 BERT (Bidirectional Encoder Representations from Transformers)\cite{bertpaper} is a training process made at Google. Instead of reading a sentence in a certain order, it uses the entire sequence simultaneously.
 
-We use ktrain library\cite{ktrain} and derive a solution from its tutorial on text classification to use BERT on our datasets. We remove duplicates from our training set and then split it in $75\%$ for training and $25\%$ for validating. To reduce the ressources consumption, we fix the batch size to 10 and the maximal number of tokens to consider to 199, as explained in \ref{199}. Based on the original paper, we use a learning rate of $2*10^{-5}$. We limit it to one epoch with the fit\_onecycle method because it is time consumming. This technique corresponds to our best submission on aicrowd with an accuracy of $87.6\%$ and an F-1 score of $87.9\%$.
+We use ktrain library\cite{ktrain} and derive a solution from its tutorial on text classification to use BERT on our datasets. We remove duplicates from our training set and then split it in $75\%$ for training and $25\%$ for validating. To reduce the ressources consumption, we fix the batch size to 10 and the maximal number of tokens to consider to 199, as explained in \ref{199}. Based on the original paper, we use a learning rate of $2*10^{-5}$. We limit it to one epoch with the fit\_onecycle method because it is time consuming. This technique corresponds to our best submission on aicrowd with an accuracy of $87.6\%$ and an F-1 score of $87.9\%$.
 
-Then, we  increase the maximal number of tokens to 400, as it is in reality in our dataset which decreases our score. Using 3 epochs, a maximal number of tokens of 128 and a batch size of 32 also reduced our accuracy on aicrowd.
+We increase the maximal number of tokens to 400, to correspond to the reality of our raw dataset. This decreases our score. Using 3 epochs, a maximal number of tokens of 128 and a batch size of 32 also reduced our accuracy on aicrowd.
 
 \section{Final Discussion}
-During this project, we take the opportuinity to experiment multiple machine learning techniques from the most traditional ones up to the newest ones. Moreover, we compared different ideas to preprocess the provided datasets and adapat already tested methods to our project.
+During this project, we take the opportuinity to experiment multiple machine learning techniques from the most traditional ones up to the newest ones. Moreover, we compared different ideas to preprocess the provided datasets and adapt already proven methods to our project.
 
 Extracting meaningful informations from tweets is a challenging task. They are small pieces of text and users often write concisely and not always in proper English. There are lots of different spellings and variations for a same word and our algorithms struggle to interpret them as one.
 
 To face this difficulty, the dataset could be larger and larger but this would also increase the computational requirements.
 
 The neural networks are powerful tools but the computational power required to train them 
-is enormous. This makes them painful to use with our datasets specially on Google Colab which does not let us make long calculation without logging out. 
+is enormous. This makes them painful to use with our datasets specially on Google Colab which does not let us make long calculation without logging out. Training them on our personal computers is definitely not possible in reasonable time.
 
 Given our results, it seems that the logistic regression and the support-vector machine give their best here. We think that we go to the limits of these techniques. 
 
@@ -192,7 +194,7 @@ performance in a smaller amount of time and with less resources. Their computati
 In future works, we would like to asses other techniques that look promising like the recurrent neural networks and more precisely the long-short term memory as we still have margin for improvement. These techniques seem to be well suited for text analysis due to their capabilities to remember previous words while they are processing others. As human 
 language is based on aligning words together to make sense, it seems natural to process words considering the ones around as well as their structure. 
 
-In the end, teaching a machine to learn from noisy and inconsistent data such as tweets to predict the sentiment expressed by their content is not an easy task.
+In the end, teaching a machine to learn from noisy and inconsistent data such as tweets to predict the human sentiment expressed by their content is not an easy task.
 
 \clearpage
 \onecolumn
