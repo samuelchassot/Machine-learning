@@ -168,24 +168,26 @@ Since that method works well, we try some variation: add 1 to 3 dropout layers, 
 Overall, the best CNN method is the third one. In CNN figure, the accuracy is computed only for 3 epochs since after the third epoch, every model is overfitting, irrespective of any added dropout.
 
 \section{BERT}
-BERT (Bidirectional Encoder Representations from Transformers)\cite{bertpaper} is a training process made at Google. Instead of reading a sentence in a certain order,it uses the entire sequence simultaneously.
+BERT (Bidirectional Encoder Representations from Transformers)\cite{bertpaper} is a training process made at Google. Instead of reading a sentence in a certain order, it uses the entire sequence simultaneously.
 
-We use ktrain library\cite{ktrain} and inspire ourself from its tutorial on text classification to use BERT on our datasets. We remove duplicates from our training set and then split it in $75\%$ for training and $25\%$ for validating. To reduce the ressources consumption, we fix the batch size to 10 and the maximal number of tokens to consider to 199, as explained in \ref{199}. Based on the original paper, we use a learning rate of $2*10^{-5}$. We limit it to one epoch with the fit\_onecycle method because it is time consumming. This technique corresponds to our best submission on aicrowd with an accuracy of $87.6\%$ and an F-1 score of $87.9\%$.
+We use ktrain library\cite{ktrain} and derive a solution from its tutorial on text classification to use BERT on our datasets. We remove duplicates from our training set and then split it in $75\%$ for training and $25\%$ for validating. To reduce the ressources consumption, we fix the batch size to 10 and the maximal number of tokens to consider to 199, as explained in \ref{199}. Based on the original paper, we use a learning rate of $2*10^{-5}$. We limit it to one epoch with the fit\_onecycle method because it is time consumming. This technique corresponds to our best submission on aicrowd with an accuracy of $87.6\%$ and an F-1 score of $87.9\%$.
 
 Then, we  increase the maximal number of tokens to 400, as it is in reality in our dataset which decreases our score. Using 3 epochs, a maximal number of tokens of 128 and a batch size of 32 also reduced our accuracy on aicrowd.
 
 \section{Final Discussion}
+During this project, we take the opportuinity to experiment multiple machine learning techniques from the most traditional ones up to the newest ones. Moreover, we compared different ideas to preprocess the provided datasets and adapat already tested methods to our project.
+
 Extracting meaningful informations from tweets is a challenging task. They are small pieces of text and users often write concisely and not always in proper English. There are lots of different spellings and variations for a same word and our algorithms struggle to interpret them as one.
+
 To face this difficulty, the dataset could be larger and larger but this would also increase the computational requirements.
 
 The neural networks are powerful tools but the computational power required to train them 
 is enormous. This makes them painful to use with our datasets specially on Google Colab which does not let us make long calculation without logging out. 
 
-Given our results, it seems that the logistic regression and the support-vector machine give their best here. We think that we go to the limits of these 
-techniques. 
+Given our results, it seems that the logistic regression and the support-vector machine give their best here. We think that we go to the limits of these techniques. 
 
-The new techniques like BERT perform better but require lots of time and memory. They give better results than older techniques cited above but the latter achieves a relatively close 
-performance in a smaller amount of time and with less resources. Their computation over accuracy ratio is way better. So they do not become obsolete in our opinion.
+The newer techniques like BERT perform better but require lots of time and memory. They give better results than techniques cited above but the latter achieves a relatively close 
+performance in a smaller amount of time and with less resources. Their computation over accuracy ratio is more reasonable. So they do not become obsolete in our opinion.
 
 In future works, we would like to asses other techniques that look promising like the recurrent neural networks and more precisely the long-short term memory as we still have margin for improvement. These techniques seem to be well suited for text analysis due to their capabilities to remember previous words while they are processing others. As human 
 language is based on aligning words together to make sense, it seems natural to process words considering the ones around as well as their structure. 
