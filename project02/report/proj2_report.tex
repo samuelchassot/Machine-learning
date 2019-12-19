@@ -122,9 +122,9 @@ layer with $p=0.15$ and an output layer of 2 nodes. All hidden layers use the Re
 
 We use standard accuracy as loss function. The optimizer used is first 'Adam' which we replace by SGD for better results.
 
-We try to train the NN on TPUs provided by Google Colab but as everything is in beta, it does work as expected.
+We try to train the NN on TPUs provided by Google Colab but as everything is in beta, it does not work as expected.
 
-The number of epochs can only be approximate due to all the crashes encountered on Colab but lives around 200 to 250 per model. Around 300 epochs, model starts to overfit and score goes down.
+The number of epochs can only be approximated due to all the crashes encountered on Colab but lives around 200 to 250 per model. Around 300 epochs, model starts to overfit and score goes down.
 
 Considering the difficulties encountered during training process due mainly to the computational cost, we keep the ones providing the best scores on aicrowd among all our tries. 
 Here is a list of structures and their corresponding score on aicrowd. Only the hidden layers are shown.
@@ -143,7 +143,8 @@ We used the following libraries to compare three CNN models and their variations
 	\item Python 3.8
 	\item Google Colab
 	\item Scikit-learn
-	\item Tensorflow.Keras
+	\item Tensorflow
+	\item Keras
 \end{itemize}
 
 We use the same embedding matrix as for NN\cite{glovepaper, gloveembedding}. To reduce the computational complexity, we cut the embedding matrix to the most used word vectors and tweets. We detect that the maximum number of useful tokens in our data set is 199\label{199}.
@@ -165,17 +166,17 @@ Since that method works well, we try some variation: add 1 to 3 dropout layers, 
 	\includegraphics[width=0.5\textwidth]{../plots/cnn.png}
 \end{figure}
 
-Overall, the best CNN method is the third one. In CNN figure, the accuracy is computed only for 3 epochs since after the third epoch, every model is overfitting, irrespective of any added dropout.
+Overall, the best CNN method is the third one. It obtains a score of $84.9\%$. In CNN figure, the accuracy is computed only for 3 epochs since after the third epoch, every model is overfitting, irrespective of any added dropout.
 
 \section{BERT}
 BERT (Bidirectional Encoder Representations from Transformers)\cite{bertpaper} is a training process made at Google. Instead of reading a sentence in a certain order, it uses the entire sequence simultaneously.
 
-We use ktrain library\cite{ktrain} and derive a solution from its tutorial on text classification to use BERT on our datasets. We remove duplicates from our training set and then split it in $75\%$ for training and $25\%$ for validating. To reduce the ressources consumption, we fix the batch size to 10 and the maximal number of tokens to consider to 199, as explained in \ref{199}. Based on the original paper, we use a learning rate of $2*10^{-5}$. We limit it to one epoch with the fit\_onecycle method because it is time consumming. This technique corresponds to our best submission on aicrowd with an accuracy of $87.6\%$ and an F-1 score of $87.9\%$.
+We use ktrain library\cite{ktrain} and derive a solution from its tutorial on text classification to use BERT on our datasets. We remove duplicates from our training set and then split it in $75\%$ for training and $25\%$ for validating. To reduce the ressources consumption, we fix the batch size to 10 and the maximal number of tokens to consider to 199, as explained in \ref{199}. Based on the original paper, we use a learning rate of $2*10^{-5}$. We limit it to one epoch with the fit\_onecycle method because it is time consuming. This technique corresponds to our best submission on aicrowd with an accuracy of $87.6\%$ and an F-1 score of $87.9\%$.
 
-Then, we  increase the maximal number of tokens to 400, as it is in reality in our dataset which decreases our score. Using 3 epochs, a maximal number of tokens of 128 and a batch size of 32 also reduced our accuracy on aicrowd.
+We increase the maximal number of tokens to 400, to correspond to the reality of our raw dataset. This decreases our score. Using 3 epochs, a maximal number of tokens of 128 and a batch size of 32 also reduced our accuracy on aicrowd.
 
 \section{Final Discussion}
-During this project, we take the opportuinity to experiment multiple machine learning techniques from the most traditional ones up to the newest ones. Moreover, we compared different ideas to preprocess the provided datasets and adapat already tested methods to our project.
+During this project, we take the opportuinity to experiment multiple machine learning techniques from the most traditional ones up to the newest ones. Moreover, we compared different ideas to preprocess the provided datasets and adapt already tested methods to our project.
 
 Extracting meaningful informations from tweets is a challenging task. They are small pieces of text and users often write concisely and not always in proper English. There are lots of different spellings and variations for a same word and our algorithms struggle to interpret them as one.
 
