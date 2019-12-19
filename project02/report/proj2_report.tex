@@ -31,17 +31,20 @@
 \clearpage
 
 \section{Introduction}
-In this project, we implement tweets classifiers using neural nets, logistic regression and support-vector machine to predict if their content is positive or negative.
+In this project, we implement tweets classifiers using neural nets, BERT, logistic regression and support-vector machine to predict if their content is positive or negative.
 
-\section{Embedding and Neural Nets}
+\section{Neural Networks}
+
+\subsection{Preprocessing}
+To clean our data, we follow an algorithm similar to Kim Yoon's paper\cite{kimyoonpaper} and code\cite{kimyooncode}. We remove duplicates on the training set and separate known contractions. For example, "can'nt" becomes "can 'nt".
+
+\subsection{Embedding and Neural Nets}
 The first part is to transform each tweets in a vector. We first try using an implementation of the 
 GloVE algorithm of our own, the results are not very satisfiing (65\%-70\%). We then use an embedding 
-created by the Stanford University which is also based on GloVE and that used a big Twitter dataset. 
+created by the Stanford University which is also based on GloVE and that used a big Twitter dataset\cite{glovepaper, gloveembedding}. 
 We decide to use the 200 features version.
 We then compute the vector for each tweets as the numerical average of each vector corresponding to the 
 words of which it is composed.
-
-We first try to clean dataset ourselves and then use another technique. (see Preprocessing section) 
 
 To do the Neural Nets and the training, we use Tensorflow library from Google and run it on a Google Colab notebook 
 to have access to the GPUs they offer.
@@ -49,7 +52,7 @@ to have access to the GPUs they offer.
 We try lots of NN configuration (at random but manually chosen). The one that give best results are the one with 
 few hidden layers but lots of neuron per layer. We also add in some of them some Dropout layers with $p\in [0.05, 0.2]$ 
 depending of the size of the layer before.
-the best achieve 84.3\% on Aiwrowd has one input layer of $200$, one hidden layer of $100,000$, one dropout 
+the best achieve 84.3\% on AIcrowd has one input layer of $200$, one hidden layer of $100,000$, one dropout 
 layer with $p=0.15$ and an output layer of 2 nodes. All hidden layers use the ReLU function, we try others 
 but that give poor results. The output layer uses softmax activation function.
 
@@ -69,6 +72,12 @@ Here a list of structures and their corresponding score on AIcrowd. Only the hid
   \rightarrow \text{Drop}\rightarrow 1000\rightarrow \text{Drop}\rightarrow $ where Drop is a Dropout layer with $p=0.1$.
   \item \textbf{$84.3\%$}: $\rightarrow 100000\rightarrow \text{Drop}\rightarrow $ where Drop is a Dropout layer with $p=0.15$
 \end{itemize}
+
+\subsection{Convolutional Neural Networks}
+We also use Stanford University GloVE's embedding\cite{glovepaper, gloveembedding}. To reduce the computational complexity, we reduce the embedding matrix to the most used word vectors and the tweets to contain only words that are in the embedding matrix.
+
+\section{BERT}
+
 \section{Logistic Regression and Support-Vector Machine}
 In this section we take a different approach compared to the one of neural nets. First, we present the preprocessing steps we applied to clean, normalize and transforme the provided tweets datasets. Then, we compare them by training two models using support-vector machine and logistic regression classifiers. Finally, we optimize the most accurate models.
 
@@ -145,6 +154,16 @@ By taking 3 and 4-grams vectorization, we are able to improve from 82\% to 86\% 
 \clearpage
 
 \begin{thebibliography}{9}
+	\bibitem{kimyoonpaper}
+		KIM, Yoon. Convolutional neural networks for sentence classification. arXiv preprint arXiv:1408.5882, 2014.
+	\bibitem{kimyooncode}
+		CNNs for sentence classification
+		\\\texttt{https://github.com/yoonkim/CNN_sentence}
+	\bibitem{glovepaper}
+		PENNINGTON, Jeffrey, SOCHER, Richard, et MANNING, Christopher. Glove: Global vectors for word representation. In : Proceedings of the 2014 conference on empirical methods in natural language processing (EMNLP). 2014. p. 1532-1543.
+	\bibitem{gloveembedding}
+		GloVE Twitter pre-trained word vectors
+		\\\texttt{https://nlp.stanford.edu/projects/glove/}
 	\bibitem{sentianal}
 		Sentiment Analysis with Python
 		\\\texttt{https://towardsdatascience.com/sentiment-analysis-with-python-part-1-5ce197074184}

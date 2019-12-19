@@ -1,6 +1,13 @@
 project01/data/
 project02/Datasets/
 
+# BERT
+project02/BERT_folder/
+project02/BERT_folder_small/
+project02/BERT_folder.zip
+project02/BERT_folder_small.zip
+
+
 *.txt
 *.pkl
 *.npy
