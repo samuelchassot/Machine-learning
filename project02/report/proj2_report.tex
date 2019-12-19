@@ -151,19 +151,13 @@ Finally, we optimize the SVM model on cleaned data.
 By taking 3 and 4-grams vectorization, we are able to improve from 82\% to 86\% even if 4-grams seems to be the limit before sever overfitting. Nevertheless, this score is confirmed on aicrowd. On the other hand, \textit{TF-IDF} performs similarly to 1-grams as tweets are short and words tend to appear only once in them.
 
 \section{Final Discussion}
-\begin{itemize}
-	\item Parler de la difficulté d'extraire de l'info des tweets car ils sont court
-	\item Parler que les limites de logreg et svm semblement atteintes
-	\item Parler grossièrement du temps de calcul
-	\item Parler de LSTM et RNN
-\end{itemize}
 It is difficult to extract meaningful information 
-from the tweets mainly due to their small size. They are really small pieces of text and users often write concisely and not always in proper english. This 
-leads our algorithm into troubles.
-To face this difficulty, we need to have enough data so the dataset needs to be big enough and that makes the computation 
-time really big.
+from the tweets mainly due to their small size. They are really small pieces of text and users often write concisely and not always in proper english. There are lots of different spelling (some more or less exotic) for a same word 
+and so our algorithm can not interpret them as one.
+To face this difficulty, the dataset needs to be big enough and that makes the computation 
+time really high.
 
-The Neural Networks are very powerful tools but the computational power required to train them 
+The Neural Networks are a very powerful tool but the computational power required to train them 
 is enormous. This makes them painful to use with our big dataset specially on Google Colab which does not let us make long calculation without logging out. 
 
 Given our results, it seems that the Logistic Regression and the Support Vector Machine give their best here. We think that we go to the limits of these 
