@@ -129,7 +129,7 @@ We use Scikit-learn to vectorize our data. We used multiple binary vectorization
 Instead of using \textit{0s} and \textit{1s} like binary vectorization, with \textit{TF-IDF} we count the occurences of the words.
 
 \subsection{1-grams Logistic Regression and Support-Vector Machine}
-First, we select the most effective cleaning or normalizing method by assessing them with logistic regression and SVM on a 1-grams vectorization.
+First, we select the most effective cleaning or normalizing method by assessing them with logistic regression and SVM on a 1-grams vectorization. We use 75\% of the provided datasets for the training and the 25\% remaining for testing.
 
 \begin{figure}[h]
 	\centering
@@ -149,7 +149,7 @@ Finally, we optimize the SVM model on cleaned data.
 	\includegraphics[width=0.5\textwidth]{../plots/improved_svm.png}
 \end{figure}
 
-By taking 3 and 4-grams vectorization, we are able to improve from 82\% to 86\% even if 4-grams seems to be the limit before sever overfitting. On the other hand, \textit{TF-IDF} performs similarly to 1-grams as tweets are short and words tend to appear only once in them.
+By taking 3 and 4-grams vectorization, we are able to improve from 82\% to 86\% even if 4-grams seems to be the limit before sever overfitting. Nevertheless, this score is confirmed on aicrowd. On the other hand, \textit{TF-IDF} performs similarly to 1-grams as tweets are short and words tend to appear only once in them.
 
 \section{Final Discussion}
 \begin{itemize}
