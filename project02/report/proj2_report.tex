@@ -84,7 +84,9 @@ We compare 3 methods:
 \section{BERT}
 BERT (Bidirectional Encoder Representations from Transformers)\cite{bertpaper} is a training process made by researchers at Google, that, instead of reading a sentence in a certain order, uses the entire sequence simultaneously.
 
-We use ktrain library\cite{ktrain} and inspire ourself from its tutorial on text classification to try BERT on our data. We remove duplicates from our training set and then split it in $75\%$ for training and $25\%$ for validating. To reduce the computational complexity and the use of RAM, we fix the length maximal of 
+We use ktrain library\cite{ktrain} and inspire ourself from its tutorial on text classification to try BERT on our data. We remove duplicates from our training set and then split it in $75\%$ for training and $25\%$ for validating. To reduce the computational complexity and the use of RAM, we fix the batch size to 10 and the maximal number of tokens to consider to 199, as explained in \ref{199}. As adviced in the original paper, we use a learning rate of $2*10^{-5}$. We do only one epoch with the fit_onecycle method since it is time consumming. This technique corresponds to our best submission on AICrowd with an accuracy of $87.6\%$ and an F-1 score of $87.9\%$.
+
+We then try to increase the maximal number of tokens to 400, as it is in reality in our dataset but it decreased our score on AICrowd of $0.01\&$. We also try with 3 epochs, a maximal number of tokens of 128 and a batch size of 32 (to make it scalable) but our result in AICrowd is then decreased of $1.0\%$.
 
 \section{Logistic Regression and Support-Vector Machine}
 In this section we take a different approach compared to the one of neural nets. First, we present the preprocessing steps we applied to clean, normalize and transforme the provided tweets datasets. Then, we compare them by training two models using support-vector machine and logistic regression classifiers. Finally, we optimize the most accurate models.
