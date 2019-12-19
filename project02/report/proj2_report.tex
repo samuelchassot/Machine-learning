@@ -73,10 +73,31 @@ Here is a list of structures and their corresponding score on aicrowd. Only the 
 \end{itemize}
 
 \subsection{Convolutional Neural Networks}
-We also use Stanford University GloVE's embedding\cite{glovepaper, gloveembedding}. To reduce the computational complexity, we reduce the embedding matrix to the most used word vectors and the tweets to contain only words that are in the embedding matrix. We detect that the maximum number of useful tokens in our data set is 199\label{199}.
+We used the following libraries to compare 3 CNN models and their variation.
+\begin{itemize}
+	\setlength\itemsep{1px}
+	\item Python 3.8
+	\item Google Colab
+	\item Scikit-learn
+	\item Tensorflow.Keras
+\end{itemize}
 
-We compare 3 methods:
+We use the same embedding matrix as for NN\cite{glovepaper, gloveembedding}. To reduce the computational complexity, we reduce the embedding matrix to the most used word vectors and the tweets to contain only words that are in the embedding matrix. We detect that the maximum number of useful tokens in our data set is 199\label{199}.
 
+We split with the train\_test\_split function of Scikit-Learn our data in $75\%$ training and $25\%$ validation. We then tokenize with the Tokenizer of Keras and pad the result so that each array has the same length.
+
+\subsubsection{Method 1}
+We use almost the same model as a Medium article\cite{cnn1}, except we use our reduced version of Stanford's embedding and add a Dropout layer of 0.2 before the last Dense layer to try to counter overfitting.
+
+\subsubsection{Method 2}
+We use the same model as a simplified version\cite{cnn2} of Kim Yoon's paper\cite{kimyoonpaper}, except we use our own embedding.
+
+\subsubsection{Method 3}
+We use the same model as proposed in Keras' blog\cite{cnn3} but with our own embedding, the sigmoid function for the last activation function, adam as optimizer and binary crossentropy for the loss.
+Since that method works well, we try some variation: add 1 to 3 Dropout layers, have more units (200 or 1000 instead of 128) in the first Dense layer or a bigger output dimension (256 or 512 instead of 128) for the first Conv1D layer.
+
+
+TODO Graph
 
 \section{BERT}
 BERT (Bidirectional Encoder Representations from Transformers)\cite{bertpaper} is a training process made by researchers at Google, that, instead of reading a sentence in a certain order, uses the entire sequence simultaneously.
@@ -186,10 +207,20 @@ We do not have time to cover them here.
 		DEVLIN, Jacob, CHANG, Ming-Wei, LEE, Kenton, et al. Bert: Pre-training of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805, 2018.
 	\bibitem{bertcode}
 		BERT Text Classification in 3 Lines of Code Using Keras
-		\\\url{https://towardsdatascience.com/bert-text-classification-in-3-lines-of-code-using-keras-264db7e7a358}
+		\\\url{https://towardsdatascience.com/bert-text-classification-in-3-lines-of-code-using-}
+		\\url{-keras-264db7e7a358}
 	\bibitem{ktrain}
 		Ktrain library
 		\\\url{https://github.com/amaiya/ktrain}
+	\bibitem{cnn1}
+		How to implement CNN for NLP tasks like Sentence Classification
+		\\\url{https://medium.com/saarthi-ai/sentence-classification-using-convolutional-neural-networks-ddad72c7048c}
+	\bibitem{cnn2}
+		Text Classification by Convolutional Neural Network in Keras
+		\\\url{https://github.com/bhaveshoswal/CNN-text-classification-keras}
+	\bibitem{cnn3}
+		Using pre-trained word embeddings in a Keras model
+		\\\url{https://blog.keras.io/using-pre-trained-word-embeddings-in-a-keras-model.html}
 	\bibitem{sentianal}
 		Sentiment Analysis with Python
 		\\\url{https://towardsdatascience.com/sentiment-analysis-with-python-part-1-5ce197074184}
