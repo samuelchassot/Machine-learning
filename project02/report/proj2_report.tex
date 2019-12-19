@@ -94,9 +94,14 @@ We use the same model as a simplified version\cite{cnn2} of Kim Yoon's paper\cit
 
 \subsubsection{Method 3}
 We use the same model as proposed in Keras' blog\cite{cnn3} with our own embedding, the sigmoid function for the last activation function, adam as optimizer and binary crossentropy for the loss.
-Since that method works well, we try some variation: add 1 to 3 dropout layers, more units (200 or 1000 instead of 128) in the first Dense layer and bigger output dimensions (256 or 512 instead of 128) for the first Conv1D layer.
+Since that method works well, we try some variation: add 1 to 3 dropout layers, more units (200 or 1000 instead of 128) in the first Dense layer and bigger output dimensions (256 or 512 instead of 128) for the first Conv1D layer. 
 
-TODO Graph
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{../plots/cnn.png}
+\end{figure}
+
+Overall, the best CNN method is the third one. In CNN figure, the accuracy is computed only for 3 epochs since after the third epoch, every model is overfitting, irrespective of any added dropout.
 
 \section{BERT}
 BERT (Bidirectional Encoder Representations from Transformers)\cite{bertpaper} is a training process made at Google. Instead of reading a sentence in a certain order,it uses the entire sequence simultaneously.
