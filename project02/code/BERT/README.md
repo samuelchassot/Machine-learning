@@ -28,7 +28,7 @@ Provided datasets must be extracted into a folder named `Datasets`, which then g
 You should prepare a folder `BERT_folder` containing two sub-directories `train` and `test`, which both contain two sub-directories `pos` and `neg` before running the code.
 
 ## How to run ?
-Either use the command python3 run.py, either you can import the notebook in Google Colab or run it using Jupyter Notebook.
+Either use the command python3 run.py, either you can import the notebook in Google Colab or run it using Jupyter Notebook. On Google Colab, you can use the function `text.texts_from_array` of the ktrain library if `text.texts_from_folder` creates problems due to the creation of the folder.
 
 # Overview
 This code demonstrates the use of the ktrain library to classify tweets into two categories, positive (1) and negative (-1). 
