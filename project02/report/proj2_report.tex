@@ -57,9 +57,9 @@ layer with $p=0.15$ and an output layer of 2 nodes. All hidden layers use the Re
 
 We use standard accuracy as loss function. The optimizer used is first 'Adam' which we replace by SGD for better results.
 
-We train the NN on TPUs provided by Google Colab but as everything is in beta, we cannot make it work.
+We try to train the NN on TPUs provided by Google Colab but as everything is in beta, we cannot make it work.
 
-The number of epochs can only be approximate due all the crashes encountered on Colab but lives around 150 per model.
+The number of epochs can only be approximate due to all the crashes encountered on Colab but lives around 150 per model.
 
 Considering the difficulties encountered during training process due mainly to the computational cost, we try multiple NN 
 structures and keep the ones providing the best scores on aicrowd. 
