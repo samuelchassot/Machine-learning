@@ -9,6 +9,7 @@ project02/BERT_folder_small.zip
 
 *.dvi
 *.out
+*.zip
 
 *.txt
 *.pkl
