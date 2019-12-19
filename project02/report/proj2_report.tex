@@ -164,14 +164,15 @@ To face this difficulty, we need to have enough data so the dataset needs to be 
 time really big.
 
 The Neural Networks are very powerful tools but the computational power required to train them 
-is enormous. This makes them painful to use with our big dataset. 
+is enormous. This makes them painful to use with our big dataset specially on Google Colab which does not let us make long calculation without logging out. 
 
 Given our results, it seems that the Logistic Regression and the Support Vector Machine give their best here. We think that we go to the limits of these 
-techniques and that we could not have done better with them. 
+techniques and that we could not have done better. 
 
-We find other techniques that could have been promissing like the Recurrent Neural Networks and more precisely the Long-Short Term Memory. These technics 
-are very well suited to the text analysis due to their capabilities to "remember" the beginning of the sentence while going through it. As the human 
-language is based on aligning words together to make sense, it seems to be a good idea. We do not have time to cover them here.
+We are aware of other techniques that are promissing like the Recurrent Neural Networks and more precisely the Long-Short Term Memory. These technics 
+are very well suited to the text analysis due to their capabilities to "remember" previous words (vectors) as as computing on a given one. As the human 
+language is based on aligning words together to make sense, it seems natural to process sentence as a whole and not words independently. 
+We do not have time to cover them here.
 
 \clearpage
 \onecolumn
