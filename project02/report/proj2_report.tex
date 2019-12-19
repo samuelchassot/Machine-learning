@@ -1,0 +1,156 @@
+\documentclass[11pt, a4paper, twocolumn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+ \geometry{
+ left=20mm,
+ right=20mm,
+ top=20mm,
+ bottom=20mm
+ }
+
+\graphicspath{ {./plots/} }
+
+\begin{document}
+\date{2019 December}
+\title{CS-443 Machine Learning Project 2: TwitterOnFire}
+\author{
+  Julie Camille Rosalie Giunta\\
+  \texttt{274957}
+  \and
+  Samuel Chassot\\
+  \texttt{270955}
+  \and
+  Daniel Filipe Nunes Silva\\
+  \texttt{275197}
+}
+
+\maketitle
+\clearpage
+
+\section{Introduction}
+In this project, we implement tweets classifiers using neural nets, logistic regression and support-vector machine to predict if their content is positive or negative.
+
+\section{Embedding and Neural Nets}
+The first part is to transform each tweets in a vector. We first try using an implementation of the 
+GloVE algorithm of our own, the results are not very satisfiing (65\%-70\%). We then use an embedding 
+created by the Stanford University which is also based on GloVE and that used a big Twitter dataset. 
+We decide to use the 200 features version.
+We then compute the vector for each tweets as the numerical average of each vector corresponding to the 
+words of which it is composed.
+
+We first try to clean dataset ourselves and then use another technique. (see Preprocessing section) 
+
+To do the Neural Nets and the training, we use Tensorflow library from Google and run it on a Google Colab notebook 
+to have access to the GPUs they offer.
+
+We try lots of NN configuration (at random but manually chosen). The one that give best results are the one with 
+few hidden layers but lots of neuron per layer. We also add in some of them some Dropout layers with $p\in [0.05, 0.2]$ 
+depending of the size of the layer before.
+the best achieve 84.3\% on Aiwrowd has one input layer of $200$, one hidden layer of $100,000$, one dropout 
+layer with $p=0.15$ and an output layer of 2 nodes. All hidden layers use the ReLU function, we try others 
+but that give poor results. The output layer uses softmax activation function.
+
+We use standard accuracy as loss function. The optimizer used is first 'Adam' which we replace by SGD for better results.
+
+We try to train the NN on TPUs provided by Google Colab but as everything is in beta, we cannot make it work.
+
+The number of epochs can only be approximate due all the crashes encountered on Colab but lives around 150 per model.
+
+Considering the difficulties encountered during training process (due mainly to the computational cost), we try lots of NN 
+structures and keep only interesting ones (that beat previous best score on AIcrowd). 
+Here a list of structures and their corresponding score on AIcrowd:
+\begin{itemize}
+  \item \textbf{$81.8\%$}: $200->25000->1000->500->2$ ReLU for all layers except last for which Softmax.
+  \item \textbf{$84.2\%$}: model-1 TODO
+  \item \textbf{$84.3\%$}: model-4 TODO
+\end{itemize}
+\section{Logistic Regression and Support-Vector Machine}
+In this section we take a different approach compared to the one of neural nets. First, we present the preprocessing steps we applied to clean, normalize and transforme the provided tweets datasets. Then, we compare them by training two models using support-vector machine and logistic regression classifiers. Finally, we optimize the most accurate models.
+
+We used the following libraries and their dependencies.
+\begin{itemize}
+	\setlength\itemsep{1px}
+	\item Python 3.8
+	\item Jupyter-Notebook
+	\item Natural Language Toolkit
+	\item Scikit-learn
+\end{itemize}
+
+\subsection{Preprocessing}
+We applied three kinds of preprocessing steps.
+\begin{itemize}
+	\setlength\itemsep{1px}
+	\item Removing or replacing words and symbols.
+	\item Normalizing by modifying words or sentences.
+	\item Transforming the tweets into usable data structures for machine learning.
+\end{itemize}
+
+\subsubsection{Tweet Cleaning}
+This is a basic operation. We get rid of \texttt{<User>}, \texttt{<url>} and \verb"\n" because these have already been processed and should not contain that much information. Notice that nice users bad users are all described by the same word. The same argument can be applied to URLs. We also use regular expression to remove all kinds of punctuation. Even if punctation is usually expressive, it may be inconsistent considering the variety of tweets.
+
+\subsubsection{Duplicates}
+We simply remove all the duplicates tweets in the cleaned datasets. The problem with duplicates is that they can artificially increase the accuracy if the sames tweets appear in the training as well as in the test dataset. Nevertheless, removing duplicates do not necessarly make sense as multiple user could have written the same tweet. We would neglect its importance.
+
+\subsubsection{Stemming}
+Stemming is a technique that removes affixes so that similar words are effectively understood as similar when interpreted by the machine learning algorithm. Here are some examples : \textit{cars - car, swimming - swimm, this - thi}. This is often described as brute force as it is not smart but crude. For example, it does not see the difference between a word in its plural form from a word whose last letter is an \textit{s}.
+
+\subsubsection{Lemmatization}
+This technique is the smart version of stemming. It does a more advanced analysis of word to clearly identify the structure of each word and to cut it correctly.
+
+\subsubsection{Stop Words}
+Stop words are the most common words like \textit{I, it, is, of, in, \dots}. They should be equivalently be present in both positive and negative datasets but they do not have real impact in the meaning of the sentence. We went trough all the datasets to establish a list of the most used words, kept the ten most used and removed them in all the tweets of the training sets.
+
+\subsubsection{Vectorization}
+We use Scikit-learn to vectorize our data. We used multiple binary vectorization with \textit{n-grams} where \textit{n} corresponds to the number of words vectorized together. This helps considering the context in which words are used by increasing \textit{n}.
+
+\subsubsection{Term Frequency-Inverse Document Frequency}
+Instead of using \textit{0s} and \textit{1s} like binary vectorization, with \textit{TF-IDF} we count the occurences of the words.
+
+\subsection{1-grams Logistic Regression and Support-Vector Machine}
+First, we select the most effective cleaning or normalizing method by assessing them with logistic regression and SVM on a 1-grams vectorization.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{../plots/logreg.png}
+\end{figure}
+
+\begin{figure}[h]
+	\includegraphics[width=0.5\textwidth]{../plots/svm.png}
+\end{figure}
+
+Overall, SVM performs better than logistic regression. Simple cleaning seems to be enough. Since tweets are short sentences, it is hard to normalize tweets without alterating them too much.
+
+\subsection{Optimization of SVM}
+Finally, we optimize the SVM model on cleaned data.
+
+\begin{figure}[h]
+	\includegraphics[width=0.5\textwidth]{../plots/improved_svm.png}
+\end{figure}
+
+By taking 3 and 4-grams vectorization, we are able to improve from 82\% to 86\% even if 4-grams seems to be the limit before sever overfitting. On the other hand, \textit{TF-IDF} performs similarly to 1-grams as tweets are short and words tend to appear only once in them.
+
+\section{Final Discussion}
+\begin{itemize}
+	\item Parler de la difficulté d'extraire de l'info des tweets car ils sont court
+	\item Parler que les limites de logreg et svm semblement atteintes
+	\item Parler grossièrement du temps de calcul
+	\item Parler de LSTM et RNN
+\end{itemize}
+
+\clearpage
+
+\begin{thebibliography}{9}
+	\bibitem{sentianal}
+		Sentiment Analysis with Python
+		\\\texttt{https://towardsdatascience.com/sentiment-analysis-with-python-part-1-5ce197074184}
+		\\\texttt{https://towardsdatascience.com/sentiment-analysis-with-python-part-2-4f71e7bde59a}
+	\bibitem{stemlema}	
+		Stemming and Lemmatization
+		\\\texttt{https://nlp.stanford.edu/IR-book/html/htmledition/stemming-and-lemmatization-1.html}
+
+\end{thebibliography}
+
+\end{document}
